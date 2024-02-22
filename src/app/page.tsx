@@ -1,9 +1,7 @@
-import Image from "next/image";
-
-export default function Home() {
+export default function Page() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <p>안녕하세요</p>
-    </main>
+    <div className={"h-screen flex"}>
+      관리자 페이지 메인 화면
+    </div>
   );
 }
