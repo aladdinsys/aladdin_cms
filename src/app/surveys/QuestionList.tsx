@@ -1,6 +1,7 @@
 import React from 'react';
-import { Question } from "@/types/survey";
+import {Question, QuestionType} from "@/types/survey";
 import useSurveyStore from "@/store/SurveyState";
+import BooleanQuestion from "@/app/surveys/Boolean";
 
 
 interface QuestionListProps {
@@ -8,8 +9,17 @@ interface QuestionListProps {
     sectionId: string;
 }
 
-const QuestionList: React.FC<QuestionListProps> = ({ questions, sectionId }) => {
-    const { deleteQuestion, updateQuestion } = useSurveyStore();
+const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
+    const { deleteQuestion, updateQuestion, updateQuestionType, updateQuestionAnswer } = useSurveyStore();
+
+    const questionTypeLabels = {
+        'FIVE-LIKERT': '5점 리쿼트',
+        'BOOLEAN': 'BOOLEAN',
+        'SHORT_ANSWER': '단답형',
+        'LONG_ANSWER': '서술형',
+        'SINGLE_SELECTION': '단일 선택',
+        'MULTIPLE_SELECTION': '다중 선택'
+    };
 
     return (
         <div className="question-list">
@@ -19,7 +29,26 @@ const QuestionList: React.FC<QuestionListProps> = ({ questions, sectionId }) => 
                         type="text"
                         value={question.question_text}
                         onChange={(e) => updateQuestion(sectionId, question.id, e.target.value)}
+                        placeholder="질문을 입력해주세요"
                     />
+
+                    <select
+                        value={question.type}
+                        onChange={(e) => updateQuestionType(sectionId, question.id, e.target.value as QuestionType)}
+                    >
+                        {Object.entries(questionTypeLabels)
+                            .filter(([value, _]) => value !== 'MAP')
+                            .map(([value, label]) => (
+                                <option key={value} value={value}>{label}</option>
+                            ))}
+                    </select>
+
+                    {question.type === 'BOOLEAN' && (
+                        <BooleanQuestion
+                            question={question}
+                            updateQuestionAnswer={(newAnswers) => updateQuestionAnswer(sectionId, question.id, newAnswers)}
+                        />
+                    )}
                     <button onClick={() => deleteQuestion(sectionId, question.id)}>질문 삭제하기</button>
                 </div>
             ))}

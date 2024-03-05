@@ -1,32 +1,31 @@
 
 import React from 'react';
-import { useStore } from '@/store/SurveyState';
 import {ConditionalQuestion} from "@/types/survey";
 
 interface BooleanQuestionProps {
-    sectionId: string;
     question: ConditionalQuestion;
+    updateQuestionAnswer: (newAnswers: any) => void;
 }
 
-const BooleanQuestion: React.FC<BooleanQuestionProps> = ({ sectionId, question }) => {
-    const updateAnswer = useStore((state) => state.updateAnswer);
-
-    const handleLabelChange = (answerIndex: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateAnswer(sectionId, question.id, answerIndex, e.target.value);
+const BooleanQuestion: React.FC<BooleanQuestionProps> = ({ question, updateQuestionAnswer }) => {
+    const handleAnswerChange = (index: number, newValue: any) => {
+        const newAnswers = [...question.answers];
+        newAnswers[index] = {...newAnswers[index], value: newValue};
+        updateQuestionAnswer(newAnswers);
     };
 
     return (
         <div>
-            <label>{question.question_text}</label>
-            {question.answers.map((option, index) => (
-                <div key={index}>
-                    <input
-                        type="text"
-                        value={option.label}
-                        onChange={handleLabelChange(index)}
-                    />
-                </div>
-            ))}
+            <input
+                type="text"
+                onChange={(e) => handleAnswerChange(0, e.target.value)}
+                placeholder="예"
+            />
+            <input
+                type="text"
+                onChange={(e) => handleAnswerChange(1, e.target.value)}
+                placeholder="아니요"
+            />
         </div>
     );
 };

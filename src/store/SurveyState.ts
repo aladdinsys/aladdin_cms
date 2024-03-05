@@ -10,6 +10,8 @@ interface SurveyState {
     updateSectionTitle: (sectionId: string, newTitle: string) => void;
     updateSectionDescription: (sectionId: string, newDescription: string) => void;
     updateQuestion: (sectionId: string, questionId: string, newText: string) => void;
+    updateQuestionType: (sectionId: string, questionId: string, newType: QuestionType) => void;
+    updateQuestionAnswer: (sectionId: string, questionId: string, newAnswers: any[]) => void;
 }
 
 const useSurveyStore = create<SurveyState>(set => ({
@@ -74,6 +76,36 @@ const useSurveyStore = create<SurveyState>(set => ({
                     questions: section.questions.map(question =>
                         question.id === questionId
                             ? { ...question, question_text: newText }
+                            : question
+                    )
+                }
+                : section
+        )
+    })),
+
+    updateQuestionAnswer: (sectionId, questionId, newAnswers) => set(state => ({
+        sections: state.sections.map(section =>
+            section.id === sectionId
+                ? {
+                    ...section,
+                    questions: section.questions.map(question =>
+                        question.id === questionId
+                            ? { ...question, answers: newAnswers }
+                            : question
+                    )
+                }
+                : section
+        )
+    })),
+
+    updateQuestionType: (sectionId, questionId, newType) => set(state => ({
+        sections: state.sections.map(section =>
+            section.id === sectionId
+                ? {
+                    ...section,
+                    questions: section.questions.map(question =>
+                        question.id === questionId
+                            ? { ...question, type: newType }
                             : question
                     )
                 }
