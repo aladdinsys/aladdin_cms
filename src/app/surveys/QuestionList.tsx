@@ -1,7 +1,8 @@
 import React from 'react';
-import {Question, QuestionType} from "@/types/survey";
+import {ConditionalQuestion, Question, QuestionType} from "@/types/survey";
 import useSurveyStore from "@/store/SurveyState";
 import BooleanQuestion from "@/app/surveys/Boolean";
+import LongAnswerQuestion from "@/app/surveys/LongAnswer";
 
 
 interface QuestionListProps {
@@ -10,7 +11,7 @@ interface QuestionListProps {
 }
 
 const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
-    const { deleteQuestion, updateQuestion, updateQuestionType, updateQuestionAnswer } = useSurveyStore();
+    const {deleteQuestion, updateQuestion, updateQuestionType, updateQuestionAnswer} = useSurveyStore();
 
     const questionTypeLabels = {
         'FIVE-LIKERT': '5점 리쿼트',
@@ -19,6 +20,22 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
         'LONG_ANSWER': '서술형',
         'SINGLE_SELECTION': '단일 선택',
         'MULTIPLE_SELECTION': '다중 선택'
+    };
+
+    const renderQuestionComponent = (question: ConditionalQuestion) => {
+        switch (question.type) {
+            case 'BOOLEAN':
+                return <BooleanQuestion
+                    question={question}
+                    updateQuestionAnswer={(newAnswers) => updateQuestionAnswer(sectionId, question.id, newAnswers)}/>;
+            case 'LONG_ANSWER':
+                return <LongAnswerQuestion
+                    question={question}
+                />
+
+            default:
+                return null;
+        }
     };
 
     return (
@@ -43,12 +60,7 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
                             ))}
                     </select>
 
-                    {question.type === 'BOOLEAN' && (
-                        <BooleanQuestion
-                            question={question}
-                            updateQuestionAnswer={(newAnswers) => updateQuestionAnswer(sectionId, question.id, newAnswers)}
-                        />
-                    )}
+                    {renderQuestionComponent(question)}
                     <button onClick={() => deleteQuestion(sectionId, question.id)}>질문 삭제하기</button>
                 </div>
             ))}

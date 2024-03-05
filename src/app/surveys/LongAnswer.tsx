@@ -1,13 +1,21 @@
 import React from 'react';
 import {Question} from "@/types/survey";
 
-const LongAnswer: React.FC<Question> = ({ question_text }) => {
+interface LongAnswerQuestionProps {
+    question: Question;
+}
+
+const LongAnswerQuestion: React.FC<LongAnswerQuestionProps> = ({question}) => {
+
     return (
         <div>
-            <label>{question_text}</label>
-            <textarea name="longAnswer" />
+            <textarea
+                placeholder="서술형"
+                readOnly={true}
+                rows={4}
+            />
         </div>
     );
 };
 
-export default LongAnswer;
+export default LongAnswerQuestion;

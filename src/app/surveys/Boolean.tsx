@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {ConditionalQuestion} from "@/types/survey";
 
@@ -7,10 +6,10 @@ interface BooleanQuestionProps {
     updateQuestionAnswer: (newAnswers: any) => void;
 }
 
-const BooleanQuestion: React.FC<BooleanQuestionProps> = ({ question, updateQuestionAnswer }) => {
+const BooleanQuestion: React.FC<BooleanQuestionProps> = ({question, updateQuestionAnswer}) => {
     const handleAnswerChange = (index: number, newValue: any) => {
         const newAnswers = [...question.answers];
-        newAnswers[index] = {...newAnswers[index], value: newValue};
+        newAnswers[index] = {...newAnswers[index], value: newValue}; // 새로운 값으로 value를 업데이트
         updateQuestionAnswer(newAnswers);
     };
 
