@@ -1,91 +1,103 @@
-import { create } from 'zustand';
-import { Question } from "@/types/survey";
+import {create} from 'zustand';
+import {Section, Survey, Question, QuestionType} from "@/types/survey";
 
-type QuestionState = Question;
-
-type SectionState = {
-    id: string;
-    title: string;
-    questions: QuestionState[];
-};
-
-type State = {
-    sections: SectionState[];
-    addSection: (title: string) => void;
-    addQuestion: (sectionId: string, question: Omit<QuestionState, 'id'>) => void;
+interface SurveyState {
+    sections: Section[];
+    addSection: () => void;
+    deleteSection: (sectionId: string) => void;
+    addQuestion: (sectionId: string, questionType: QuestionType) => void;
     deleteQuestion: (sectionId: string, questionId: string) => void;
-    updateQuestionType: (sectionId: string, questionId: string, type: QuestionState['type']) => void;
-    updateAnswer: (sectionId: string, questionId: string, answerIndex: number, newLabel: string) => void;
-};
+    updateSectionTitle: (sectionId: string, newTitle: string) => void;
+    updateSectionDescription: (sectionId: string, newDescription: string) => void;
+    updateQuestion: (sectionId: string, questionId: string, newText: string) => void;
+}
 
-export const useStore = create<State>((set) => ({
+const useSurveyStore = create<SurveyState>(set => ({
     sections: [],
-    addSection: (title) => set((state) => {
-        const newSectionId = String(state.sections.length + 1); // id를 문자열로 생성
+
+    addSection: () => set(state => {
+        const newSectionId = `${state.sections.length + 1}`;
         return {
-            sections: [...state.sections, { id: newSectionId, title, questions: [] }]
+            sections: [...state.sections, { id: newSectionId, title: '', description: '', questions: [] }]
         };
     }),
-    addQuestion: (sectionId, question) => set((state) => ({
+
+    updateSectionTitle: (sectionId, newTitle) => set(state => ({
+        sections: state.sections.map(section =>
+            section.id === sectionId
+                ? { ...section, title: newTitle }
+                : section
+        )
+    })),
+
+    updateSectionDescription: (sectionId, newDescription) => set(state => ({
+        sections: state.sections.map(section =>
+            section.id === sectionId
+                ? {...section, description: newDescription}
+                : section
+        )
+    })),
+
+    deleteSection: (sectionId) => set(state => {
+        const updatedSections = state.sections.filter(section => section.id !== sectionId);
+        const renumberedSections = updatedSections.map((section, index) => {
+            const newSectionId = `${index + 1}`;
+            return {
+                ...section,
+                id: newSectionId,
+            };
+        });
+
+        return {
+            sections: renumberedSections
+        };
+    }),
+
+    addQuestion: (sectionId, questionType) => set(state => {
+        return {
+            sections: state.sections.map(section => {
+                if (section.id === sectionId) {
+                    const newQuestionId = `${section.questions.length + 1}`;
+                    const newQuestion = { id: newQuestionId, type: questionType, question_text: '', answers: [], description: '' };
+                    return { ...section, questions: [...section.questions, newQuestion] };
+                }
+                return section;
+            })
+        };
+    }),
+
+    updateQuestion: (sectionId, questionId, newText) => set(state => ({
+        sections: state.sections.map(section =>
+            section.id === sectionId
+                ? {
+                    ...section,
+                    questions: section.questions.map(question =>
+                        question.id === questionId
+                            ? { ...question, question_text: newText }
+                            : question
+                    )
+                }
+                : section
+        )
+    })),
+
+    deleteQuestion: (sectionId, questionId) => set(state => ({
         sections: state.sections.map(section => {
             if (section.id === sectionId) {
-                const newQuestionId = String(section.questions.length + 1); // id를 문자열로 생성
+                const updatedQuestions = section.questions.filter(question => question.id !== questionId);
+                const renumberedQuestions = updatedQuestions.map((question, qIndex) => ({
+                    ...question,
+                    id: `${qIndex + 1}`
+                }));
                 return {
                     ...section,
-                    questions: [...section.questions, { ...question, id: newQuestionId }]
+                    questions: renumberedQuestions
                 };
             }
             return section;
         })
     })),
 
-    deleteQuestion: (sectionId, questionId) => set((state) => ({
-        sections: state.sections.map(section => {
-            if (section.id === sectionId) {
-                return {
-                    ...section,
-                    questions: section.questions.filter(question => question.id !== questionId)
-                };
-            }
-            return section;
-        })
-    })),
-    updateQuestionType: (sectionId, questionId, type) => set((state) => ({
-        sections: state.sections.map(section => {
-            if (section.id === sectionId) {
-                return {
-                    ...section,
-                    questions: section.questions.map(question => {
-                        if (question.id === questionId) {
-                            return { ...question, type };
-                        }
-                        return question;
-                    })
-                };
-            }
-            return section;
-        })
-    })),
-    updateAnswer: (sectionId, questionId, answerIndex, newLabel) => set((state) => ({
-        sections: state.sections.map(section => {
-            if (section.id === sectionId) {
-                return {
-                    ...section,
-                    questions: section.questions.map(question => {
-                        if (question.id === questionId) {
-                            const newAnswers = question.answers.map((option, index) => {
-                                if (index === answerIndex) {
-                                    return { ...option, label: newLabel };
-                                }
-                                return option;
-                            });
-                            return { ...question, answers: newAnswers };
-                        }
-                        return question;
-                    })
-                };
-            }
-            return section;
-        })
-    })),
 }));
+
+export default useSurveyStore;

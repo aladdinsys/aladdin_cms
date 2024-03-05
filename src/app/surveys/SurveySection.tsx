@@ -1,64 +1,40 @@
-import React, {useState} from 'react';
+import React, { useState, ChangeEvent } from 'react';
+import { Section } from "@/types/survey";
 import QuestionList from "@/app/surveys/QuestionList";
-import Button from "@/components/atoms/Button";
-import {Question, QuestionType} from "@/types/survey";
-
-interface Section {
-    title: string;
-    description?: string;
-    questions: Question[];
-}
+import useSurveyStore from "@/store/SurveyState";
 
 interface SurveySectionProps {
     section: Section;
-    sectionIndex: number;
-    onSectionTitleChange: (title: string, index: number) => void;
-    onSectionDescriptionChange?: (description: string, index: number) => void;
-    onDeleteSection?: (index: number) => void;
 }
 
-const SurveySection: React.FC<SurveySectionProps> = ({
-                                                         section,
-                                                         sectionIndex,
-                                                         onSectionTitleChange,
-                                                         onSectionDescriptionChange,
-                                                         onDeleteSection
-                                                     }) => {
-    const [questions, setQuestions] = useState<Question[]>(section.questions);
+const SurveySection: React.FC<SurveySectionProps> = ({ section }) => {
+    const { addQuestion, deleteSection, updateSectionTitle, updateSectionDescription } = useSurveyStore();
 
-    const handleQuestionTypeChange = (index: number, type: Question['type']) => {
-        const updatedQuestions = [...questions];
-        updatedQuestions[index].type = type;
-        setQuestions(updatedQuestions);
+    const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        updateSectionTitle(section.id, e.target.value);
     };
 
-    const handleDeleteQuestion = (questionIndex: number) => {
-        const updatedQuestions = questions.filter((_, index) => index !== questionIndex);
-        setQuestions(updatedQuestions);
+    const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
+        updateSectionDescription(section.id, e.target.value);
     };
 
     return (
         <div className="survey-section">
             <input
                 type="text"
-                value={section.title}
-                onChange={(e) => onSectionTitleChange(e.target.value, sectionIndex)}
-                placeholder="섹션 이름을 입력하세요"
+                value={section.title} // 직접 섹션의 타이틀을 사용합니다.
+                onChange={handleTitleChange}
+                placeholder="섹션 제목을 입력해주세요."
             />
             <input
                 type="text"
-                value={section.description}
-                onChange={(e) => onSectionDescriptionChange && onSectionDescriptionChange(e.target.value, sectionIndex)}
-                placeholder="섹션 설명(선택 사항)"
+                value={section.description} // 직접 섹션의 설명을 사용합니다.
+                onChange={handleDescriptionChange}
+                placeholder="섹션 설명을 입력해주세요."
             />
-
-            <QuestionList sectionId={String(sectionIndex)}  // sectionId를 문자열로 변환하여 전달
-                          onQuestionTypeChange={handleQuestionTypeChange}
-                          onDeleteQuestion={handleDeleteQuestion}/>
-
-            {onDeleteSection && (
-                <Button onClick={() => onDeleteSection(sectionIndex)}>섹션 삭제</Button>
-            )}
+            <QuestionList questions={section.questions} sectionId={section.id} />
+            <button onClick={() => addQuestion(section.id, 'BOOLEAN')}>질문 추가하기</button>
+            <button onClick={() => deleteSection(section.id)}>섹션 삭제하기</button>
         </div>
     );
 };
