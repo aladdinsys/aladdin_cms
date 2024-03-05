@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { SignInResponse } from "@/types/auth";
+import { SignInResponse } from "@/apis/types/auth";
 
 type AuthState = {
     accessToken: string;

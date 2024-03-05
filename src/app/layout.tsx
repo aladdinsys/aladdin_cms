@@ -1,7 +1,7 @@
 import type {Metadata} from "next";
 import "./globals.css";
 import React from "react";
-import {ChildrenProps} from "@/types";
+import {ChildrenProps} from "@/apis/types";
 import Nav from "@/components/templates/Nav";
 import MainFooter from "@/components/templates/Footer";
 import Contents from "@/components/templates/Contents";

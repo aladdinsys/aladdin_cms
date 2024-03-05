@@ -18,8 +18,6 @@ export default function Nav() {
         router.push('auth/sign-in');
     }
 
-
-
     return (
         <div className="relative bg-gray-900 p-8 flex flex-row justify-between items-center text-violet-50">
             { accessToken !== '' ?

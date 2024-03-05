@@ -3,9 +3,12 @@
 import {FormEvent, useRef} from "react";
 import Button from "@/components/atoms/Button";
 import InputField from "@/components/molecule/InputField";
-import * as auth from "@/services/auth";
-import { useRouter } from 'next/navigation'
+import {redirect, useRouter} from 'next/navigation'
 import useAuthState from "@/store/AuthState";
+
+import { signIn as signInApi } from "@/apis/auth";
+import {setCookie} from "@/utils/cookie";
+import {ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE} from "@/constants/auth";
 
 const SignInForm = () => {
 
@@ -16,25 +19,37 @@ const SignInForm = () => {
     const userIdRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
-    const onPasswordKeyDown = (event: FormEvent<HTMLInputElement>) => {
+    const onPasswordKeyDown = async (event: FormEvent<HTMLInputElement>) => {
         // @ts-ignore
         if(event.key !== 'Enter') return;
-        signIn();
+        await signIn();
     }
 
-    const signIn = () => {
+    const signIn = async () => {
         const userId = userIdRef.current?.value!;
         const password = passwordRef.current?.value!;
 
-        const result = auth.signIn({userId, password});
-        result.then((response) => {
+        const body = await signInApi({userId, password});
 
-            setAuth(response);
-            router.push('/');
+        const response = body.data;
+        if(response.status !== 'OK') {
+            alert(response.message);
+            return;
+        }
 
-        }).catch((error) => {
-            console.error(error);
-        });
+        setCookie(ACCESS_TOKEN_COOKIE, response.result.accessToken, {
+                path: '/',
+                maxAge: 60000,
+            },
+        );
+        setCookie(REFRESH_TOKEN_COOKIE, response.result.refreshToken, {
+                path: '/',
+                maxAge: 86400 * 1000,
+            },
+        );
+
+        router.replace('/');
+        router.refresh();
     }
 
     return (
