@@ -28,8 +28,16 @@ const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, que
         updateQuestionAnswer(sectionId, questionId, updatedAnswers);
     };
 
+    const isValidSection = (sectionId: string) => sections.some(section => section.id === sectionId);
+
+    const currentSection = sections.find(section => section.id === sectionId);
+    const currentQuestion = currentSection?.questions.find(q => q.id === questionId);
+    const currentAnswer = currentQuestion?.answers.find(a => a.value === answerValue);
+    const currentNextSection = currentAnswer?.nextSection;
+    const isNextSectionValid = currentNextSection && isValidSection(currentNextSection);
+
     return (
-        <select onChange={(e) => handleSectionChange(e)}>
+        <select value={isNextSectionValid ? currentNextSection : ""} onChange={(e) => handleSectionChange(e)}>
             <option value="">다음 섹션 선택</option>
             {sections.map((section, index) => (
                 sectionId !== section.id && (
