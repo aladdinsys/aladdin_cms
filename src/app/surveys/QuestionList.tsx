@@ -15,6 +15,12 @@ interface QuestionListProps {
 const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
     const {deleteQuestion, updateQuestion, updateQuestionType} = useSurveyStore();
 
+    const sectionStyle = {
+        margin: '20px', // 원하는 마진 값을 지정
+        border: '1px'
+        // 추가적인 스타일을 여기에 정의할 수 있습니다
+    };
+
     const questionTypeLabels = {
         'FIVE-LIKERT': '5점 리쿼트',
         'BOOLEAN': 'BOOLEAN',
@@ -53,7 +59,7 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
     return (
         <div className="question-list">
             {questions.map((question) => (
-                <div key={question.id}>
+                <div key={question.id} style={sectionStyle}>
                     <input
                         type="text"
                         value={question.question_text}

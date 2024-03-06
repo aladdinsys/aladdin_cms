@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import {Section, QuestionType} from "@/types/survey";
+import {QuestionType, Section} from "@/types/survey";
 
 interface SurveyState {
     sections: Section[];
@@ -21,7 +21,7 @@ const useSurveyStore = create<SurveyState>(set => ({
     addSection: () => set(state => {
         const newSectionId = `${state.sections.length + 1}`;
         return {
-            sections: [...state.sections, { id: newSectionId, title: '', description: '', questions: [] }]
+            sections: [...state.sections, {id: newSectionId, title: '', description: '', questions: []}]
         };
     }),
 
@@ -32,22 +32,32 @@ const useSurveyStore = create<SurveyState>(set => ({
     })),
 
     updateSectionTitle: (sectionId, newTitle) => {
-        useSurveyStore.getState().updateSection(sectionId, (section) => ({ ...section, title: newTitle }));
+        useSurveyStore.getState().updateSection(sectionId, (section) => ({...section, title: newTitle}));
     },
 
     updateSectionDescription: (sectionId, newDescription) => {
-        useSurveyStore.getState().updateSection(sectionId, (section) => ({ ...section, description: newDescription }));
+        useSurveyStore.getState().updateSection(sectionId, (section) => ({...section, description: newDescription}));
     },
 
     deleteSection: (sectionId) => set(state => {
-        const updatedSections = state.sections.filter(section => section.id !== sectionId);
-        const renumberedSections = updatedSections.map((section, index) => {
-            const newSectionId = `${index + 1}`;
-            return {
-                ...section,
-                id: newSectionId,
-            };
-        });
+        const updatedSections = state.sections.map(section => ({
+            ...section,
+            questions: section.questions.map(question => ({
+                ...question,
+                answers: question.answers.map(answer => ({
+                    ...answer,
+                    nextSection: answer.nextSection === sectionId ? "" : answer.nextSection
+                }))
+            }))
+        }));
+
+        const filteredSections = updatedSections.filter(section => section.id !== sectionId);
+
+        const renumberedSections = filteredSections.map((section, index) => ({
+            ...section,
+            id: `${index + 1}`
+        }));
+
         return {
             sections: renumberedSections
         };
@@ -58,8 +68,14 @@ const useSurveyStore = create<SurveyState>(set => ({
             sections: state.sections.map(section => {
                 if (section.id === sectionId) {
                     const newQuestionId = `${section.questions.length + 1}`;
-                    const newQuestion = { id: newQuestionId, type: questionType, question_text: '', answers: [], description: '' };
-                    return { ...section, questions: [...section.questions, newQuestion] };
+                    const newQuestion = {
+                        id: newQuestionId,
+                        type: questionType,
+                        question_text: '',
+                        answers: [],
+                        description: ''
+                    };
+                    return {...section, questions: [...section.questions, newQuestion]};
                 }
                 return section;
             })
@@ -70,7 +86,7 @@ const useSurveyStore = create<SurveyState>(set => ({
         useSurveyStore.getState().updateSection(sectionId, (section) => ({
             ...section,
             questions: section.questions.map(question =>
-                question.id === questionId ? { ...question, question_text: newText } : question
+                question.id === questionId ? {...question, question_text: newText} : question
             ),
         }));
     },
@@ -79,16 +95,16 @@ const useSurveyStore = create<SurveyState>(set => ({
         useSurveyStore.getState().updateSection(sectionId, (section) => ({
             ...section,
             questions: section.questions.map(question =>
-                question.id === questionId ? { ...question, answers: newAnswers } : question
+                question.id === questionId ? {...question, answers: newAnswers} : question
             ),
         }));
     },
 
-    updateQuestionType: (sectionId, questionId, newType) =>{
+    updateQuestionType: (sectionId, questionId, newType) => {
         useSurveyStore.getState().updateSection(sectionId, (section) => ({
             ...section,
             questions: section.questions.map(question =>
-                question.id === questionId ? { ...question, type: newType } : question
+                question.id === questionId ? {...question, type: newType} : question
             ),
         }));
     },

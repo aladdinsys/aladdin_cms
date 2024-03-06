@@ -8,6 +8,11 @@ interface SurveySectionProps {
 }
 
 const SurveySection: React.FC<SurveySectionProps> = ({section}) => {
+
+    const sectionStyle = {
+        margin: '20px',
+    };
+
     const {addQuestion, deleteSection, updateSectionTitle, updateSectionDescription} = useSurveyStore();
 
     const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +24,7 @@ const SurveySection: React.FC<SurveySectionProps> = ({section}) => {
     };
 
     return (
-        <div className="survey-section">
+        <div className="survey-section" style={sectionStyle}>
             <input
                 type="text"
                 value={section.title}

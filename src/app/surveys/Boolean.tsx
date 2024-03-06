@@ -41,7 +41,7 @@ const BooleanQuestion: React.FC<BooleanQuestionProps> = ({sectionId, question}) 
                             value={answer.value}
                             onChange={(e) => handleAnswerChange(i, e.target.value)}
                         />
-                        <NextSectionSelector sectionId={sectionId} questionId={question.id} />
+                        <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>
                     </div>
                 ))}
             </div>
