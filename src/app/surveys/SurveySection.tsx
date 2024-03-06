@@ -32,7 +32,7 @@ const SurveySection: React.FC<SurveySectionProps> = ({section}) => {
                 onChange={handleDescriptionChange}
                 placeholder="섹션 설명을 입력해주세요."
             />
-            <QuestionList questions={section.questions} sectionId={section.id}/>
+            <QuestionList questions={section.questions} sectionId={section.id} />
             <button onClick={() => addQuestion(section.id, 'FIVE-LIKERT')}>질문 추가하기</button>
             <button onClick={() => deleteSection(section.id)}>섹션 삭제하기</button>
         </div>

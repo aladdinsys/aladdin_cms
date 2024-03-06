@@ -1,11 +1,17 @@
 import React from 'react';
 import {Question} from "@/types/survey";
 
-const ShortAnswer: React.FC<Question> = ({ question_text }) => {
+interface ShortAnswerProps {
+    question: Question;
+
+}
+const ShortAnswer: React.FC<ShortAnswerProps> = () => {
     return (
         <div>
-            <label>{question_text}</label>
-            <input type="text" name="shortAnswer" />
+            <input
+                placeholder="단답형"
+                readOnly={true}
+            />
         </div>
     );
 };

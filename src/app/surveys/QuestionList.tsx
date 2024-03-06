@@ -3,6 +3,8 @@ import {ConditionalQuestion, Question, QuestionType} from "@/types/survey";
 import useSurveyStore from "@/store/SurveyState";
 import BooleanQuestion from "@/app/surveys/Boolean";
 import LongAnswerQuestion from "@/app/surveys/LongAnswer";
+import ShortAnswer from "@/app/surveys/ShortAnswer";
+import FiveLikertQuestion from "@/app/surveys/FiveLikert";
 
 
 interface QuestionListProps {
@@ -11,7 +13,7 @@ interface QuestionListProps {
 }
 
 const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
-    const {deleteQuestion, updateQuestion, updateQuestionType, updateQuestionAnswer} = useSurveyStore();
+    const {deleteQuestion, updateQuestion, updateQuestionType} = useSurveyStore();
 
     const questionTypeLabels = {
         'FIVE-LIKERT': '5점 리쿼트',
@@ -19,7 +21,8 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
         'SHORT_ANSWER': '단답형',
         'LONG_ANSWER': '서술형',
         'SINGLE_SELECTION': '단일 선택',
-        'MULTIPLE_SELECTION': '다중 선택'
+        'MULTIPLE_SELECTION': '다중 선택',
+        'MAP': '지도'
     };
 
     const renderQuestionComponent = (question: ConditionalQuestion) => {
@@ -27,12 +30,21 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
             case 'BOOLEAN':
                 return <BooleanQuestion
                     question={question}
-                    updateQuestionAnswer={(newAnswers) => updateQuestionAnswer(sectionId, question.id, newAnswers)}/>;
+                    sectionId={sectionId}
+                />
             case 'LONG_ANSWER':
                 return <LongAnswerQuestion
                     question={question}
                 />
-
+            case 'SHORT_ANSWER':
+                return <ShortAnswer
+                    question={question}
+                />
+            case 'FIVE-LIKERT':
+                return <FiveLikertQuestion
+                    sectionId={sectionId}
+                    question={question}
+                />
             default:
                 return null;
         }
@@ -40,7 +52,7 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
 
     return (
         <div className="question-list">
-            {questions.map((question, index) => (
+            {questions.map((question) => (
                 <div key={question.id}>
                     <input
                         type="text"
@@ -53,11 +65,9 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
                         value={question.type}
                         onChange={(e) => updateQuestionType(sectionId, question.id, e.target.value as QuestionType)}
                     >
-                        {Object.entries(questionTypeLabels)
-                            .filter(([value, _]) => value !== 'MAP')
-                            .map(([value, label]) => (
-                                <option key={value} value={value}>{label}</option>
-                            ))}
+                        {Object.entries(questionTypeLabels).map(([value, label]) => (
+                            <option key={value} value={value}>{label}</option>
+                        ))}
                     </select>
 
                     {renderQuestionComponent(question)}
