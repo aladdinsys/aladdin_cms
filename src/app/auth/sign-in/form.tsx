@@ -1,20 +1,19 @@
 'use client'
 
-import {FormEvent, useRef} from "react";
+import {FormEvent, useEffect, useRef} from "react";
 import Button from "@/components/atoms/Button";
 import InputField from "@/components/molecule/InputField";
-import {redirect, useRouter} from 'next/navigation'
-import useAuthState from "@/store/AuthState";
+import {useRouter} from 'next/navigation'
+import useUserState from "@/store/UserState";
 
 import { signIn as signInApi } from "@/apis/auth";
-import {setCookie} from "@/utils/cookie";
+import {removeCookie, setCookie} from "@/utils/cookie";
 import {ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE} from "@/constants/auth";
 
 const SignInForm = () => {
 
-    const router = useRouter()
-
-    const { setAuth } = useAuthState();
+    const router = useRouter();
+    const userState = useUserState();
 
     const userIdRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -48,9 +47,18 @@ const SignInForm = () => {
             },
         );
 
+        userState.setAuth(response.result);
+
         router.replace('/');
         router.refresh();
     }
+
+    useEffect(() => {
+        userState.signOut();
+        removeCookie(ACCESS_TOKEN_COOKIE, {path: '/'});
+        removeCookie(REFRESH_TOKEN_COOKIE, {path: '/'});
+
+    },[userState.signOut])
 
     return (
         <div className={"py-4 min-h-[30rem] flex flex-col gap-2"}>

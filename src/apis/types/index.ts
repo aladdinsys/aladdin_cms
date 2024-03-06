@@ -5,8 +5,8 @@ export type ChildrenProps = {
 }
 
 export type Response<T> = {
-    "timestamp": string;
-    "status": string;
-    "message": string;
-    "result": T;
+    timestamp: string;
+    status: string;
+    message: string;
+    result: T;
 }
