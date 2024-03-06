@@ -24,7 +24,6 @@ const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, que
             }
             return answer;
         });
-
         updateQuestionAnswer(sectionId, questionId, updatedAnswers);
     };
 

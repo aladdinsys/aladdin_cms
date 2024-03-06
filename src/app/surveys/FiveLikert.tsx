@@ -48,6 +48,7 @@ const FiveLikertQuestion: React.FC<FiveLikertQuestionProps> = ({sectionId, quest
                     <NextSectionSelector
                         sectionId={sectionId}
                         questionId={question.id}
+                        answerValue={answer.value}
                     />
                 </div>
             ))}

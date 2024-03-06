@@ -40,19 +40,26 @@ const useSurveyStore = create<SurveyState>(set => ({
     },
 
     deleteSection: (sectionId) => set(state => {
-        const updatedSections = state.sections.map(section => ({
+        const updatedSectionsWithNextSection = state.sections.map(section => ({
             ...section,
             questions: section.questions.map(question => ({
                 ...question,
-                answers: question.answers.map(answer => ({
-                    ...answer,
-                    nextSection: answer.nextSection === sectionId ? "" : answer.nextSection
-                }))
+                answers: question.answers.map(answer => {
+                    if (answer.nextSection && answer.nextSection !== "" && answer.nextSection !== sectionId) {
+                        const updatedNextSection = parseInt(answer.nextSection) > parseInt(sectionId)
+                            ? `${parseInt(answer.nextSection) - 1}`
+                            : answer.nextSection;
+                        return { ...answer, nextSection: updatedNextSection };
+                    }
+                    return { ...answer, nextSection: answer.nextSection === sectionId ? "" : answer.nextSection };
+                })
             }))
         }));
 
-        const filteredSections = updatedSections.filter(section => section.id !== sectionId);
+        // 삭제된 섹션 필터링
+        const filteredSections = updatedSectionsWithNextSection.filter(section => section.id !== sectionId);
 
+        // 섹션 ID 재배정
         const renumberedSections = filteredSections.map((section, index) => ({
             ...section,
             id: `${index + 1}`
