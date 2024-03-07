@@ -56,10 +56,8 @@ const useSurveyStore = create<SurveyState>(set => ({
             }))
         }));
 
-        // 삭제된 섹션 필터링
         const filteredSections = updatedSectionsWithNextSection.filter(section => section.id !== sectionId);
 
-        // 섹션 ID 재배정
         const renumberedSections = filteredSections.map((section, index) => ({
             ...section,
             id: `${index + 1}`

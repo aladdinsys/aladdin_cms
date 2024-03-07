@@ -15,8 +15,8 @@ const BooleanQuestion: React.FC<BooleanQuestionProps> = ({sectionId, question}) 
     useEffect(() => {
         if (!question.answers || question.answers.length !== 2) {
             const defaultAnswers = [
-                {id: '1', value: '예', label: '예'},
-                {id: '2', value: '아니요', label: '아니요'}
+                {value: true, label: '예', nextSection: ''},
+                {value: false, label: '아니요', nextSection: ''}
             ];
             updateQuestionAnswer(sectionId, question.id, defaultAnswers);
         }
@@ -39,7 +39,7 @@ const BooleanQuestion: React.FC<BooleanQuestionProps> = ({sectionId, question}) 
                     <div key={i}>
                         <input
                             type="text"
-                            value={answer.value}
+                            value={answer.label}
                             onChange={(e) => handleAnswerChange(i, e.target.value)}
                         />
                         <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>

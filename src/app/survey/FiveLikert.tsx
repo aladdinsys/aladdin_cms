@@ -15,11 +15,11 @@ const FiveLikertQuestion: React.FC<FiveLikertQuestionProps> = ({sectionId, quest
     useEffect(() => {
         if (!question.answers || question.answers.length !== 5) {
             const defaultAnswers = [
-                {id: '1', value: '매우 동의', label: '매우 동의'},
-                {id: '2', value: '동의', label: '동의'},
-                {id: '3', value: '중립', label: '중립'},
-                {id: '4', value: '비동의', label: '비동의'},
-                {id: '5', value: '매우 비동의', label: '매우 비동의'}
+                {value: '1', label: '매우 동의', nextSection: ''},
+                {value: '2', label: '동의', nextSection: ''},
+                {value: '3', label: '중립', nextSection: ''},
+                {value: '4', label: '비동의', nextSection: ''},
+                {value: '5', label: '매우 비동의', nextSection: ''}
             ];
 
             updateQuestionAnswer(sectionId, question.id, defaultAnswers);
@@ -43,7 +43,7 @@ const FiveLikertQuestion: React.FC<FiveLikertQuestionProps> = ({sectionId, quest
                 <div key={index}>
                     <input
                         type="text"
-                        value={answer.value}
+                        value={answer.label}
                         onChange={(e) => handleAnswerChange(index, e.target.value)}
                     />
                     <NextSectionSelector
