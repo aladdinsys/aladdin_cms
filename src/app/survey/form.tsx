@@ -9,6 +9,15 @@ const SurveyForm = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
+    const handleSubmit = () => {
+        const surveyData = {
+            title,
+            description,
+            sections
+        };
+        console.log("설문 데이터:", surveyData);
+    };
+
     return (
         <div className="survey-form-container">
             <input
@@ -30,6 +39,7 @@ const SurveyForm = () => {
                 />
             ))}
             <button onClick={addSection}>섹션 추가하기</button>
+            <button onClick={handleSubmit}>제출하기</button>
         </div>
     );
 };

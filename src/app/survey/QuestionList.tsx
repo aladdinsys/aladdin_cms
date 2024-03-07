@@ -6,6 +6,7 @@ import LongAnswerQuestion from "@/app/survey/LongAnswer";
 import ShortAnswer from "@/app/survey/ShortAnswer";
 import FiveLikertQuestion from "@/app/survey/FiveLikert";
 import {ConditionalQuestion, Question, QuestionType} from "@/app/survey/types/survey";
+import Selection from "@/app/survey/Selection";
 
 interface QuestionListProps {
     questions: Question[];
@@ -47,6 +48,16 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
                 />
             case 'FIVE-LIKERT':
                 return <FiveLikertQuestion
+                    sectionId={sectionId}
+                    question={question}
+                />
+            case 'SINGLE_SELECTION':
+                return <Selection
+                    sectionId={sectionId}
+                    question={question}
+                />
+            case 'MULTIPLE_SELECTION':
+                return <Selection
                     sectionId={sectionId}
                     question={question}
                 />
