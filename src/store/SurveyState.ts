@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import {QuestionType, Section} from "@/types/survey";
+import {QuestionType, Section} from "@/app/surveys/types/survey";
 
 interface SurveyState {
     sections: Section[];
