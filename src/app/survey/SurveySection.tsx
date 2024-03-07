@@ -1,8 +1,8 @@
 import React, {ChangeEvent} from 'react';
 
-import QuestionList from "@/app/surveys/QuestionList";
+import QuestionList from "@/app/survey/QuestionList";
 import useSurveyStore from "@/store/SurveyState";
-import {Section} from "@/app/surveys/types/survey";
+import {Section} from "@/app/survey/types/survey";
 
 interface SurveySectionProps {
     section: Section;

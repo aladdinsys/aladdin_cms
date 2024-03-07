@@ -1,10 +1,11 @@
 import React from 'react';
-import {Question} from "@/types/survey";
+import {Question} from "@/app/survey/types/survey";
 
 interface ShortAnswerProps {
     question: Question;
 
 }
+
 const ShortAnswer: React.FC<ShortAnswerProps> = () => {
     return (
         <div>

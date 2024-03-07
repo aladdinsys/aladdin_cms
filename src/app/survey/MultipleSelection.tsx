@@ -1,5 +1,5 @@
 import React from 'react';
-import {Question} from "@/types/survey";
+import {Question} from "@/app/survey/types/survey";
 
 const MultipleSelection: React.FC<Question> = ({question_text, answers}) => {
     return (

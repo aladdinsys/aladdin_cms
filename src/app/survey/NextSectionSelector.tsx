@@ -20,7 +20,7 @@ const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, que
 
         const updatedAnswers = currentQuestion.answers.map(answer => {
             if (answer.value === answerValue) {
-                return { ...answer, nextSection: e.target.value };
+                return {...answer, nextSection: e.target.value};
             }
             return answer;
         });

@@ -1,14 +1,9 @@
-import MyPageForm from "@/app/user/my/form";
+import SurveyForm from "@/app/survey/form";
 
-const MyPage = async () => {
-    return(
-        <>
-            <div>
-                마이 페이지
-                <MyPageForm/>
-            </div>
-        </>
-    )
+export default function SurveysPage() {
+    return (
+        <div className={"h-screen flex"}>
+            <SurveyForm/>
+        </div>
+    );
 }
-
-export default MyPage;

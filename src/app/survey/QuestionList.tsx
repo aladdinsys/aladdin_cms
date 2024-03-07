@@ -1,11 +1,11 @@
 import React from 'react';
-import {ConditionalQuestion, Question, QuestionType} from "@/types/survey";
-import useSurveyStore from "@/store/SurveyState";
-import BooleanQuestion from "@/app/surveys/Boolean";
-import LongAnswerQuestion from "@/app/surveys/LongAnswer";
-import ShortAnswer from "@/app/surveys/ShortAnswer";
-import FiveLikertQuestion from "@/app/surveys/FiveLikert";
 
+import useSurveyStore from "@/store/SurveyState";
+import BooleanQuestion from "@/app/survey/Boolean";
+import LongAnswerQuestion from "@/app/survey/LongAnswer";
+import ShortAnswer from "@/app/survey/ShortAnswer";
+import FiveLikertQuestion from "@/app/survey/FiveLikert";
+import {ConditionalQuestion, Question, QuestionType} from "@/app/survey/types/survey";
 
 interface QuestionListProps {
     questions: Question[];
@@ -16,9 +16,8 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
     const {deleteQuestion, updateQuestion, updateQuestionType} = useSurveyStore();
 
     const sectionStyle = {
-        margin: '20px', // 원하는 마진 값을 지정
+        margin: '20px',
         border: '1px'
-        // 추가적인 스타일을 여기에 정의할 수 있습니다
     };
 
     const questionTypeLabels = {

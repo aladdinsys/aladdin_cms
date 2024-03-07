@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
 import React, {useState} from 'react';
 import useSurveyStore from "@/store/SurveyState";
-import SurveySection from "@/app/surveys/SurveySection";
+import SurveySection from "@/app/survey/SurveySection";
 
 const SurveyForm = () => {
     const {sections, addSection} = useSurveyStore();
