@@ -111,7 +111,7 @@ const useSurveyStore = create<SurveyState>(set => ({
         useSurveyStore.getState().updateSection(sectionId, (section) => ({
             ...section,
             questions: section.questions.map(question =>
-                question.id === questionId ? {...question, type: newType} : question
+                question.id === questionId ? {...question, type: newType,  answers: []} : question
             ),
         }));
     },
