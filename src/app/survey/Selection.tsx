@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import { ConditionalQuestion } from "@/app/survey/types/survey";
 import NextSectionSelector from "@/app/survey/NextSectionSelector";
 
-interface SingleSelectionProps {
+interface SelectionProps {
     sectionId: string;
     question: ConditionalQuestion;
 }
 
-const Selection: React.FC<SingleSelectionProps> = ({ sectionId, question }) => {
+const Selection: React.FC<SelectionProps> = ({ sectionId, question }) => {
     const { updateQuestionAnswer } = useSurveyStore();
-    const [answers, setAnswers] = useState([{ label: '', value: '' }]);
+    const [answers, setAnswers] = useState(question.answers || []);
+
+    useEffect(() => {
+        // 질문 유형이 변경될 때 답변 상태를 초기화
+        setAnswers([{ label: '', value: '' }]);
+    }, [question.type]);
 
     const handleAnswerChange = (index: number, value: string) => {
         const updatedAnswers = answers.map((answer, i) =>
