@@ -9,7 +9,7 @@ const LongAnswerQuestion: React.FC<LongAnswerQuestionProps> = ({question}) => {
 
     return (
         <div>
-            <textarea placeholder="서술형" readOnly={true} rows={4}/>
+            <input placeholder="서술형" readOnly={true} />
         </div>
     );
 };
