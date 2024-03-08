@@ -1,7 +1,7 @@
 import React from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import {ConditionalQuestion} from "@/app/survey/types/survey";
-import NextSectionSelector from "@/app/survey/NextSectionSelector";
+import NextSectionSelector from "@/app/survey/question-components/NextSectionSelector";
 
 interface MultipleSelectionProps {
     sectionId: string;

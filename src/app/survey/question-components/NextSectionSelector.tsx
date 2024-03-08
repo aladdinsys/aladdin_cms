@@ -8,10 +8,11 @@ interface NextSectionSelectorProps {
 }
 
 const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, questionId, answerValue}) => {
-    const {sections, updateQuestionAnswer} = useSurveyStore();
+
+    const {survey, updateQuestionAnswer} = useSurveyStore();
 
     const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const currentSection = sections.find(section => section.id === sectionId);
+        const currentSection = survey.contents.find(section => section.id === sectionId);
         const currentQuestion = currentSection?.questions.find(q => q.id === questionId);
 
         if (!currentQuestion) {
@@ -24,12 +25,13 @@ const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, que
             }
             return answer;
         });
+
         updateQuestionAnswer(sectionId, questionId, updatedAnswers);
     };
 
-    const isValidSection = (sectionId: string) => sections.some(section => section.id === sectionId);
+    const isValidSection = (sectionId: string) => survey.contents.some(section => section.id === sectionId);
 
-    const currentSection = sections.find(section => section.id === sectionId);
+    const currentSection = survey.contents.find(section => section.id === sectionId);
     const currentQuestion = currentSection?.questions.find(q => q.id === questionId);
     const currentAnswer = currentQuestion?.answers.find(a => a.value === answerValue);
     const currentNextSection = currentAnswer?.nextSection;
@@ -38,7 +40,7 @@ const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, que
     return (
         <select value={isNextSectionValid ? currentNextSection : ""} onChange={(e) => handleSectionChange(e)}>
             <option value="">다음 섹션 선택</option>
-            {sections.map((section, index) => (
+            {survey.contents.map((section, index) => (
                 sectionId !== section.id && (
                     <option key={index} value={section.id}>
                         {`${section.id}섹션(${section.title})로 이동`}

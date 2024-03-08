@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 
 import useSurveyStore from "@/store/SurveyState";
-import NextSectionSelector from "@/app/survey/NextSectionSelector";
+import NextSectionSelector from "@/app/survey/question-components/NextSectionSelector";
 import {ConditionalQuestion} from "@/app/survey/types/survey";
 
 interface BooleanQuestionProps {

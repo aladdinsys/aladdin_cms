@@ -1,13 +1,8 @@
 import React from 'react';
 
 import useSurveyStore from "@/store/SurveyState";
-import BooleanQuestion from "@/app/survey/question-components/Boolean";
-import LongAnswerQuestion from "@/app/survey/question-components/LongAnswer";
-import ShortAnswer from "@/app/survey/question-components/ShortAnswer";
-import FiveLikertQuestion from "@/app/survey/question-components/FiveLikert";
-import {Question, QuestionComponentMap, QuestionType} from "@/app/survey/types/survey";
-import SingleSelection from "@/app/survey/question-components/SingleSelection";
-import MultipleSelection from "@/app/survey/question-components/MultipleSelection";
+import {Question, QuestionType} from "@/app/survey/types/survey";
+import {componentMap, questionTypeLabels} from "@/app/survey/constants";
 
 interface QuestionListProps {
     questions: Question[];
@@ -20,25 +15,6 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
     const sectionStyle = {
         margin: '20px',
         border: '1px'
-    };
-
-    const questionTypeLabels = {
-        'FIVE-LIKERT': '5점 리쿼트',
-        'BOOLEAN': 'BOOLEAN',
-        'SHORT_ANSWER': '단답형',
-        'LONG_ANSWER': '서술형',
-        'SINGLE_SELECTION': '단일 선택',
-        'MULTIPLE_SELECTION': '다중 선택',
-        'MAP': '지도'
-    };
-
-    const componentMap: QuestionComponentMap = {
-        'BOOLEAN': BooleanQuestion,
-        'LONG_ANSWER': LongAnswerQuestion,
-        'SHORT_ANSWER': ShortAnswer,
-        'FIVE-LIKERT': FiveLikertQuestion,
-        'SINGLE_SELECTION': SingleSelection,
-        'MULTIPLE_SELECTION': MultipleSelection,
     };
 
     return (

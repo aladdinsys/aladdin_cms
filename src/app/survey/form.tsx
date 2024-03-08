@@ -1,21 +1,31 @@
-'use client'
-
-import React, {useState} from 'react';
+import React from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import SurveySection from "@/app/survey/SurveySection";
+import {postSurvey} from "@/apis/survey";
 
-const SurveyForm = () => {
-    const {sections, addSection} = useSurveyStore();
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+const SurveyForm = ({surveyId}: { surveyId: number }) => {
 
-    const handleSubmit = () => {
+    const {survey, addSection, setSurveyTitle, setSurveyDescription} = useSurveyStore();
+
+    const handleSubmit = async () => {
+        const content = JSON.stringify({contents: survey.contents});
+
         const surveyData = {
-            title,
-            description,
-            sections
+            title: survey.title,
+            description: survey.description,
+            content
         };
-        console.log("설문 데이터:", surveyData);
+
+        try {
+            let responseData;
+            if (surveyId) {
+                //responseData = await patchSurvey(surveyId, surveyData);
+                responseData = await postSurvey(surveyData);
+            }
+            console.log('서버 응답:', responseData);
+        } catch (error) {
+            console.error('설문 저장 실패:', error);
+        }
     };
 
     return (
@@ -23,16 +33,16 @@ const SurveyForm = () => {
             <input
                 type="text"
                 placeholder="제목 없는 설문지"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={survey.title}
+                onChange={(e) => setSurveyTitle(e.target.value)}
             />
             <input
                 type="text"
                 placeholder="설문지 설명(선택 사항)"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={survey.description}
+                onChange={(e) => setSurveyDescription(e.target.value)}
             />
-            {sections.map((section, index) => (
+            {survey.contents.map((section, index) => (
                 <SurveySection key={section.id} section={section}
                 />
             ))}

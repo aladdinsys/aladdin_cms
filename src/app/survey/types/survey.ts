@@ -2,7 +2,7 @@ import React from "react";
 
 export type Survey = {
     title: string;
-    sections: Array<Section>;
+    contents: Section[];
     description: string;
 }
 export type Section = {
