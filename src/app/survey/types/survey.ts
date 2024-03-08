@@ -1,14 +1,20 @@
-export interface Survey {
+import React from "react";
+
+export type Survey = {
     title: string;
     sections: Array<Section>;
     description: string;
 }
-export interface Section {
+export type Section = {
     id: string;
     title: string;
     questions: Array<Question>;
     description: string;
 }
+
+export type QuestionComponentMap = {
+    [key in QuestionType]?: React.FC<any>;
+};
 
 export type QuestionType =
     'FIVE-LIKERT' | 'BOOLEAN' | 'SHORT_ANSWER' | 'LONG_ANSWER' | 'SINGLE_SELECTION' | 'MULTIPLE_SELECTION' | 'MAP' | '';
@@ -26,12 +32,12 @@ export type QuestionOptions = {
     coordinates?: [number, number];
 }
 
-export interface ConditionalQuestionOption {
+export type ConditionalQuestionOption = {
     value: any;
     label: string;
     nextSection?: string;
 }
 
-export interface ConditionalQuestion extends Question {
+export type ConditionalQuestion = Question & {
     answers: ConditionalQuestionOption[];
-}
+};

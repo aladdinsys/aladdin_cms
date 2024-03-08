@@ -5,7 +5,7 @@ import BooleanQuestion from "@/app/survey/Boolean";
 import LongAnswerQuestion from "@/app/survey/LongAnswer";
 import ShortAnswer from "@/app/survey/ShortAnswer";
 import FiveLikertQuestion from "@/app/survey/FiveLikert";
-import {ConditionalQuestion, Question, QuestionType} from "@/app/survey/types/survey";
+import {Question, QuestionComponentMap, QuestionType} from "@/app/survey/types/survey";
 import SingleSelection from "@/app/survey/SingleSelection";
 import MultipleSelection from "@/app/survey/MultipleSelection";
 
@@ -32,65 +32,47 @@ const QuestionList: React.FC<QuestionListProps> = ({questions, sectionId}) => {
         'MAP': '지도'
     };
 
-    const renderQuestionComponent = (question: ConditionalQuestion) => {
-        switch (question.type) {
-            case 'BOOLEAN':
-                return <BooleanQuestion
-                    question={question}
-                    sectionId={sectionId}
-                />
-            case 'LONG_ANSWER':
-                return <LongAnswerQuestion
-                    question={question}
-                />
-            case 'SHORT_ANSWER':
-                return <ShortAnswer
-                    question={question}
-                />
-            case 'FIVE-LIKERT':
-                return <FiveLikertQuestion
-                    sectionId={sectionId}
-                    question={question}
-                />
-            case 'SINGLE_SELECTION':
-                return <SingleSelection
-                    sectionId={sectionId}
-                    question={question}
-                />
-            case 'MULTIPLE_SELECTION':
-                return <MultipleSelection
-                    sectionId={sectionId}
-                    question={question}
-                />
-            default:
-                return null;
-        }
+    const componentMap: QuestionComponentMap = {
+        'BOOLEAN': BooleanQuestion,
+        'LONG_ANSWER': LongAnswerQuestion,
+        'SHORT_ANSWER': ShortAnswer,
+        'FIVE-LIKERT': FiveLikertQuestion,
+        'SINGLE_SELECTION': SingleSelection,
+        'MULTIPLE_SELECTION': MultipleSelection,
     };
 
     return (
         <div className="question-list">
-            {questions.map((question) => (
-                <div key={question.id} style={sectionStyle}>
-                    <input
-                        type="text"
-                        value={question.question_text}
-                        onChange={(e) => updateQuestion(sectionId, question.id, e.target.value)}
-                        placeholder="질문을 입력해주세요"
-                    />
+            {questions.map((question) => {
+                const SpecificQuestionComponent = componentMap[question.type];
+                const props = {
+                    question,
+                    ...(componentMap[question.type] && {sectionId})
+                };
 
-                    <select
-                        value={question.type}
-                        onChange={(e) => updateQuestionType(sectionId, question.id, e.target.value as QuestionType)}
-                    >
-                        {Object.entries(questionTypeLabels).map(([value, label]) => (
-                            <option key={value} value={value}>{label}</option>
-                        ))}
-                    </select>
+                return (
+                    <div key={question.id} style={sectionStyle}>
+                        <input
+                            type="text"
+                            value={question.question_text}
+                            onChange={(e) => updateQuestion(sectionId, question.id, e.target.value)}
+                            placeholder="질문을 입력해주세요"
+                        />
 
-                    {renderQuestionComponent(question)}
-                    <button onClick={() => deleteQuestion(sectionId, question.id)}>질문 삭제하기</button>
-                </div>
-            ))}
+                        <select
+                            value={question.type}
+                            onChange={(e) => updateQuestionType(sectionId, question.id, e.target.value as QuestionType)}
+                        >
+                            {Object.entries(questionTypeLabels).map(([value, label]) => (
+                                <option key={value} value={value}>{label}</option>
+                            ))}
+                        </select>
+
+                        {SpecificQuestionComponent ? <SpecificQuestionComponent {...props} /> : null}
+                        <button onClick={() => deleteQuestion(sectionId, question.id)}>질문 삭제하기</button>
+                    </div>
+                );
+            })}
         </div>
     );
 };

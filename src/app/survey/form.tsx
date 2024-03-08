@@ -33,9 +33,7 @@ const SurveyForm = () => {
                 onChange={(e) => setDescription(e.target.value)}
             />
             {sections.map((section, index) => (
-                <SurveySection
-                    key={section.id}
-                    section={section}
+                <SurveySection key={section.id} section={section}
                 />
             ))}
             <button onClick={addSection}>섹션 추가하기</button>

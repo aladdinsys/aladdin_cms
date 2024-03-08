@@ -46,10 +46,7 @@ const FiveLikertQuestion: React.FC<FiveLikertQuestionProps> = ({sectionId, quest
                         value={answer.label}
                         onChange={(e) => handleAnswerChange(index, e.target.value)}
                     />
-                    <NextSectionSelector
-                        sectionId={sectionId}
-                        questionId={question.id}
-                        answerValue={answer.value}
+                    <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}
                     />
                 </div>
             ))}

@@ -14,7 +14,7 @@ const SurveySection: React.FC<SurveySectionProps> = ({section}) => {
         margin: '20px',
     };
 
-    const {addQuestion, deleteSection, updateSectionTitle, updateSectionDescription} = useSurveyStore();
+    const {deleteSection, updateSectionTitle, updateSectionDescription, addQuestion} = useSurveyStore();
 
     const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
         updateSectionTitle(section.id, e.target.value);
