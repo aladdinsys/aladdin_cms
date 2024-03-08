@@ -1,13 +1,13 @@
 import React from 'react';
 
 import useSurveyStore from "@/store/SurveyState";
-import BooleanQuestion from "@/app/survey/Boolean";
-import LongAnswerQuestion from "@/app/survey/LongAnswer";
-import ShortAnswer from "@/app/survey/ShortAnswer";
-import FiveLikertQuestion from "@/app/survey/FiveLikert";
+import BooleanQuestion from "@/app/survey/question-components/Boolean";
+import LongAnswerQuestion from "@/app/survey/question-components/LongAnswer";
+import ShortAnswer from "@/app/survey/question-components/ShortAnswer";
+import FiveLikertQuestion from "@/app/survey/question-components/FiveLikert";
 import {Question, QuestionComponentMap, QuestionType} from "@/app/survey/types/survey";
-import SingleSelection from "@/app/survey/SingleSelection";
-import MultipleSelection from "@/app/survey/MultipleSelection";
+import SingleSelection from "@/app/survey/question-components/SingleSelection";
+import MultipleSelection from "@/app/survey/question-components/MultipleSelection";
 
 interface QuestionListProps {
     questions: Question[];
