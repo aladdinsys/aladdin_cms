@@ -48,7 +48,7 @@ async function refreshToken() {
             const response = res.data;
             setCookie(ACCESS_TOKEN_COOKIE, response.result?.accessToken, {
                     path: '/',
-                    maxAge: 30000,
+                    maxAge: 86400 * 1000,
                 },
             );
             setCookie(REFRESH_TOKEN_COOKIE, response.result?.refreshToken, {

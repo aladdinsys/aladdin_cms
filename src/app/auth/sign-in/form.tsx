@@ -38,7 +38,7 @@ const SignInForm = () => {
 
         setCookie(ACCESS_TOKEN_COOKIE, response.result.accessToken, {
                 path: '/',
-                maxAge: 60000,
+                maxAge: 86400 * 1000,
             },
         );
         setCookie(REFRESH_TOKEN_COOKIE, response.result.refreshToken, {
@@ -54,9 +54,9 @@ const SignInForm = () => {
     }
 
     useEffect(() => {
-        signOut();
-        removeCookie(ACCESS_TOKEN_COOKIE, {path: '/'});
-        removeCookie(REFRESH_TOKEN_COOKIE, {path: '/'});
+        // signOut();
+        // removeCookie(ACCESS_TOKEN_COOKIE, {path: '/'});
+        // removeCookie(REFRESH_TOKEN_COOKIE, {path: '/'});
     },[signOut])
 
     return (
