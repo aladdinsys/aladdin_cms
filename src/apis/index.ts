@@ -43,17 +43,23 @@ const errorHandler = async (error: any) => {
 async function refreshToken() {
     removeCookie(ACCESS_TOKEN_COOKIE);
 
+    if(!getCookie(REFRESH_TOKEN_COOKIE)) {
+        window.location.href = '/auth/sign-in';
+        return;
+        // return Promise.reject('Refresh Token is not found');
+    }
+
     return api.post<Response<SignInResponse>>('/auth/refresh-token', {})
         .then((res) => {
             const response = res.data;
             setCookie(ACCESS_TOKEN_COOKIE, response.result?.accessToken, {
                     path: '/',
-                    maxAge: 30000,
+                    maxAge: 1000 * 60 * 60,
                 },
             );
             setCookie(REFRESH_TOKEN_COOKIE, response.result?.refreshToken, {
                     path: '/',
-                    maxAge: 86400 * 1000,
+                    maxAge: 1000 * 60 * 60 * 24,
                 },
             );
 
