@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import {SurveyResponse} from "@/apis/types/survey";
 
-type SurveyState = {
+type SurveyResponseState = {
     survey: SurveyResponse;
     setSurvey: (survey: SurveyResponse) => void;
 }
 
-const useSurveyState = create<SurveyState>((set) => ({
+const useSurveyResponseState = create<SurveyResponseState>((set) => ({
     survey: {
         id: 0,
         title: '',
@@ -21,4 +21,4 @@ const useSurveyState = create<SurveyState>((set) => ({
     setSurvey: (survey: SurveyResponse) => set({ survey }),
 }));
 
-export default useSurveyState;
+export default useSurveyResponseState;

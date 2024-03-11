@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {ElasticQuery, ElasticSurveyHit, Match} from "@/apis/types/survey_elastic";
 import {getResultByQuery} from "@/apis/survey_elastic";
 import {getSurveyById} from "@/apis/survey";
-import useSurveyState from "@/store/SurveyState";
+import useSurveyResponseState from "@/store/SurveyResponseState";
 import PollForm from "@/app/survey/result/PollForm";
 import {Question, Section} from "@/app/survey/type/survey";
 
@@ -23,7 +23,7 @@ const makeQuery = (surveyId: string): ElasticQuery<Match> => {
 const SurveyResultForm = (props: SurveyResultFormProps) => {
 
     const [ sections, setSections] = useState([]);
-    const { survey, setSurvey } = useSurveyState();
+    const { survey, setSurvey } = useSurveyResponseState();
 
     const { id } = props;
 
