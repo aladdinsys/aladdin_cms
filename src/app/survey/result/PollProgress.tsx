@@ -32,11 +32,11 @@ const bgColors: {[key: string]: string} = {
 }
 
 const progressColors: {[key: string]: string} = {
-    primary: '[&::-webkit-progress-value]:bg-violet-400 [&::-moz-progress-bar]:bg-violet-400',
-    red: '[&::-webkit-progress-value]:bg-red-400 [&::-moz-progress-bar]:bg-red-400',
-    blue: '[&::-webkit-progress-value]:bg-blue-400 [&::-moz-progress-bar]:bg-blue-400',
-    green: '[&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400',
-    violet: '[&::-webkit-progress-value]:bg-violet-400 [&::-moz-progress-bar]:bg-violet-400',
+    primary: '[&::-webkit-progress-value]:bg-violet-500 [&::-moz-progress-bar]:bg-violet-500',
+    red: '[&::-webkit-progress-value]:bg-red-500 [&::-moz-progress-bar]:bg-red-500',
+    blue: '[&::-webkit-progress-value]:bg-blue-500 [&::-moz-progress-bar]:bg-blue-500',
+    green: '[&::-webkit-progress-value]:bg-green-500 [&::-moz-progress-bar]:bg-green-500',
+    violet: '[&::-webkit-progress-value]:bg-violet-500 [&::-moz-progress-bar]:bg-violet-500',
 }
 
 
@@ -68,7 +68,7 @@ const PollProgress = ({color = 'primary', label, total, count}: PollProgressProp
                 className={
                 twMerge(
                     progressStyleClass,
-                    progressColors[color],
+                    progressColors['green'],
                 )}
                 value={count}
                 max={total}

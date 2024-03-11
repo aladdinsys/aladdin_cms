@@ -88,7 +88,7 @@ const SurveyResultForm = (props: SurveyResultFormProps) => {
                             <h1 className={"text-4xl"}>{section.title}</h1>
                             {section.questions
                                 .map((question: any) =>
-                                <PollForm color={"red"} key={question.id} question={question.question_text} answers={question.answers}></PollForm>
+                                <PollForm key={question.id} question={question.question_text} answers={question.answers}></PollForm>
                             )}
                         </div>
                     )}
