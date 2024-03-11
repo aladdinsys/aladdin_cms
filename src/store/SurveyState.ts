@@ -2,9 +2,8 @@ import {create} from 'zustand';
 import {QuestionType, Section, Survey} from "@/app/survey/_types/survey";
 
 interface SurveyState {
-    survey: Survey;
-    setSurveyTitle: (title: string) => void;
-    setSurveyDescription: (description: string) => void;
+    sections: Section[];
+    setSections: (sections: Section[]) => void;
     addSection: () => void;
     updateSection: (sectionId: string, updateFn: (section: Section) => Section) => void;
     deleteSection: (sectionId: string) => void;
@@ -18,37 +17,18 @@ interface SurveyState {
 }
 
 const useSurveyStore = create<SurveyState>(set => ({
-    survey: {
-        title: '',
-        description: '',
-        contents: [],
-    },
-
-    setSurveyTitle: (title) => set((state) => ({
-        survey: { ...state.survey, title: title }
-    })),
-
-    setSurveyDescription: (description) => set((state) => ({
-        survey: { ...state.survey, description: description }
-    })),
-
+    sections: [],
+    setSections: (sections) => set({ sections }),
     addSection: () => set((state) => ({
-        survey: {
-            ...state.survey,
-            contents: [
-                ...state.survey.contents,
-                { id: `${state.survey.contents.length + 1}`, title: '', description: '', questions: [] }
-            ]
-        }
+        sections: [
+            ...state.sections,
+            { id: `${state.sections.length + 1}`, title: '', description: '', questions: [] }
+        ]
     })),
-
     updateSection: (sectionId, updateFn) => set(state => ({
-        survey: {
-            ...state.survey,
-            contents: state.survey.contents.map(section =>
-                section.id === sectionId ? updateFn(section) : section
-            ),
-        },
+        sections: state.sections.map(section =>
+            section.id === sectionId ? updateFn(section) : section
+        ),
     })),
 
     updateSectionTitle: (sectionId, newTitle) => {
@@ -64,7 +44,7 @@ const useSurveyStore = create<SurveyState>(set => ({
     },
 
     deleteSection: (sectionId) => set(state => {
-        const updatedContentsWithNextSection = state.survey.contents.map(section => ({
+        const updatedContentsWithNextSection = state.sections.map(section => ({
             ...section,
             questions: section.questions.map(question => ({
                 ...question,
@@ -87,32 +67,26 @@ const useSurveyStore = create<SurveyState>(set => ({
         }));
 
         return {
-            survey: {
-                ...state.survey,
-                contents: renumberedSections
-            }
+            sections: renumberedSections
         };
     }),
 
     addQuestion: (sectionId, questionType) => set(state => {
         return {
-            survey: {
-                ...state.survey,
-                contents: state.survey.contents.map(section => {
-                    if (section.id === sectionId) {
-                        const newQuestionId = `question-${section.questions.length + 1}`;
-                        const newQuestion = {
-                            id: newQuestionId,
-                            type: questionType,
-                            question_text: '',
-                            answers: [],
-                            description: ''
-                        };
-                        return {...section, questions: [...section.questions, newQuestion]};
-                    }
-                    return section;
-                })
-            }
+            sections: state.sections.map(section => {
+                if (section.id === sectionId) {
+                    const newQuestionId = `question-${section.questions.length + 1}`;
+                    const newQuestion = {
+                        id: newQuestionId,
+                        type: questionType,
+                        question_text: '',
+                        answers: [],
+                        description: ''
+                    };
+                    return {...section, questions: [...section.questions, newQuestion]};
+                }
+                return section;
+            })
         };
     }),
 
@@ -144,19 +118,16 @@ const useSurveyStore = create<SurveyState>(set => ({
     },
 
     deleteQuestion: (sectionId, questionId) => set(state => ({
-        survey: {
-            ...state.survey,
-            contents: state.survey.contents.map(section => {
-                if (section.id === sectionId) {
-                    const updatedQuestions = section.questions.filter(question => question.id !== questionId);
-                    return {
-                        ...section,
-                        questions: updatedQuestions
-                    };
-                }
-                return section;
-            })
-        }
+        sections: state.sections.map(section => {
+            if (section.id === sectionId) {
+                const updatedQuestions = section.questions.filter(question => question.id !== questionId);
+                return {
+                    ...section,
+                    questions: updatedQuestions
+                };
+            }
+            return section;
+        })
     })),
 
 

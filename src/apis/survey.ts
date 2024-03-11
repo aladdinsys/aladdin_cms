@@ -10,6 +10,14 @@ export const getSurveys = async () => {
     return data;
 }
 
+export const getSurveysOwn = async () => {
+    const { data } = await api.get<Response<SurveyResponse[]>>('/surveys/find-own')
+        .then((response) => response)
+        .catch((error) => error);
+
+    return data;
+}
+
 export const getSurveyById = async (id: string) => {
     const { data } = await api.get<Response<SurveyResponse[]>>(`/surveys/${id}`)
         .then((response) => response)

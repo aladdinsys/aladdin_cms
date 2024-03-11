@@ -2,6 +2,9 @@ import React from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import {ConditionalQuestion} from "@/app/survey/_types/survey";
 import NextSectionSelector from "@/app/survey/_question-components/NextSectionSelector";
+import Input from "@/components/atoms/Input";
+import {generateUID} from "@/utils/uid";
+import Button from "@/components/atoms/Button";
 
 interface SingleSelectionProps {
     sectionId: string;
@@ -45,21 +48,23 @@ const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) 
         updateQuestionAnswer(sectionId, question.id, renumberedAnswers);
     };
 
+    const tempInputId = generateUID();
 
     return (
         <div>
             {question.answers.map((answer, index) => (
                 <div key={index}>
-                    <input
+                    <Input
+                        name={tempInputId}
                         type="text"
-                        value={answer.label}
-                        onChange={(e) => handleAnswerChange(index, e.target.value)}
+                        defaultValue={answer.label}
+                        onChange={(e) => handleAnswerChange(index, e.currentTarget.value)}
                     />
                     <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>
-                    <button onClick={() => handleDeleteAnswer(index)}>답변 삭제</button>
+                    <Button color={"red"} onClick={() => handleDeleteAnswer(index)}>답변 삭제</Button>
                 </div>
             ))}
-            <button onClick={handleAddAnswer}>답변 추가</button>
+            <Button color={"green"} onClick={handleAddAnswer}>답변 추가</Button>
         </div>
     );
 };

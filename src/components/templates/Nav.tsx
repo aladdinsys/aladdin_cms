@@ -10,9 +10,10 @@ export default function Nav() {
     } = useAuthState();
 
     return (
-        <div className="relative bg-gray-900 p-8 flex flex-row justify-between gap-4 items-center text-violet-50">
+        <div className="relative bg-gray-900 p-8 flex flex-row justify-between gap-8 items-center text-violet-50">
                 <Link href={"/"}>Home</Link>
-                <Link href={"/survey/register"}>서베이 만들기</Link>
+                <Link href={"/survey/forms"}>서베이 목록</Link>
+                <Link href={"/survey/forms/edit"}>서베이 만들기</Link>
                 <Link href={"/survey/result"}>서베이 결과</Link>
                 <div className={"flex-1 self-end flex justify-end flex-row gap-4"}>
                     {name ?

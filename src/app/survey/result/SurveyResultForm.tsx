@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 import nextLogo from "/public/next.svg";
 import React, {useEffect, useState} from "react";

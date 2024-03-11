@@ -3,6 +3,8 @@ import React, {useEffect} from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import NextSectionSelector from "@/app/survey/_question-components/NextSectionSelector";
 import {ConditionalQuestion} from "@/app/survey/_types/survey";
+import {generateUID} from "@/utils/uid";
+import Input from "@/components/atoms/Input";
 
 interface FiveLikertQuestionProps {
     sectionId: string;
@@ -37,14 +39,17 @@ const FiveLikertQuestion: React.FC<FiveLikertQuestionProps> = ({sectionId, quest
         updateQuestionAnswer(sectionId, question.id, newAnswers);
     };
 
+    const tempInputId = generateUID();
+
     return (
-        <div>
+        <div className={"flex flex-col gap-2"}>
             {question.answers.map((answer, index) => (
-                <div key={index}>
-                    <input
+                <div key={index} className={"flex flex-row gap-2"}>
+                    <Input
+                        name={tempInputId}
                         type="text"
-                        value={answer.label}
-                        onChange={(e) => handleAnswerChange(index, e.target.value)}
+                        defaultValue={answer.label}
+                        onChange={(e) => handleAnswerChange(index, e.currentTarget.value)}
                     />
                     <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}
                     />

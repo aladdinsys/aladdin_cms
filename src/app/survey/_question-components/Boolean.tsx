@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import NextSectionSelector from "@/app/survey/_question-components/NextSectionSelector";
 import {ConditionalQuestion} from "@/app/survey/_types/survey";
+import Input from "@/components/atoms/Input";
 
 interface BooleanQuestionProps {
     sectionId: string;
@@ -33,20 +34,19 @@ const BooleanQuestion: React.FC<BooleanQuestionProps> = ({sectionId, question}) 
     };
 
     return (
-        <div>
-            <div>
-                {question.answers.map((answer, i) => (
-                    <div key={i}>
-                        <input
-                            type="text"
-                            value={answer.label}
-                            onChange={(e) => handleAnswerChange(i, e.target.value)}
-                        />
-                        <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>
-                    </div>
-                ))}
-            </div>
-        </div>
+        <>
+            {question.answers.map((answer, i) => (
+                <div key={i} className={"flex flex-row gap-2"}>
+                    <Input
+                        type="text"
+                        name={answer.name}
+                        defaultValue={answer.label}
+                        onChange={(e) => handleAnswerChange(i, e.currentTarget.value)}
+                    />
+                    <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>
+                </div>
+            ))}
+        </>
     );
 };
 
