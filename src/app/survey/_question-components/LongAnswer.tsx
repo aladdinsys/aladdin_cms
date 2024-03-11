@@ -1,5 +1,5 @@
 import React from 'react';
-import {Question} from "@/app/survey/types/survey";
+import {Question} from "@/app/survey/_types/survey";
 
 interface LongAnswerQuestionProps {
     question: Question;

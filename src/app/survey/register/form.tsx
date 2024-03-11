@@ -1,6 +1,6 @@
 import React from 'react';
 import useSurveyStore from "@/store/SurveyState";
-import SurveySection from "@/app/survey/SurveySection";
+import SurveySection from "@/app/survey/register/SurveySection";
 import {postSurvey} from "@/apis/survey";
 
 const SurveyForm = ({surveyId}: { surveyId: number }) => {

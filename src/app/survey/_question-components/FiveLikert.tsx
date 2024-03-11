@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 
 import useSurveyStore from "@/store/SurveyState";
-import NextSectionSelector from "@/app/survey/question-components/NextSectionSelector";
-import {ConditionalQuestion} from "@/app/survey/types/survey";
+import NextSectionSelector from "@/app/survey/_question-components/NextSectionSelector";
+import {ConditionalQuestion} from "@/app/survey/_types/survey";
 
 interface FiveLikertQuestionProps {
     sectionId: string;

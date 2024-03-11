@@ -32,13 +32,12 @@ const SignInForm = () => {
 
         const response = body.data;
         if(response.status !== 'OK') {
-            alert(response.message);
             return;
         }
 
         setCookie(ACCESS_TOKEN_COOKIE, response.result.accessToken, {
                 path: '/',
-                maxAge: 60000,
+                maxAge: 86400 * 1000,
             },
         );
         setCookie(REFRESH_TOKEN_COOKIE, response.result.refreshToken, {
@@ -54,9 +53,9 @@ const SignInForm = () => {
     }
 
     useEffect(() => {
-        signOut();
-        removeCookie(ACCESS_TOKEN_COOKIE, {path: '/'});
-        removeCookie(REFRESH_TOKEN_COOKIE, {path: '/'});
+        // signOut();
+        // removeCookie(ACCESS_TOKEN_COOKIE, {path: '/'});
+        // removeCookie(REFRESH_TOKEN_COOKIE, {path: '/'});
     },[signOut])
 
     return (

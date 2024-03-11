@@ -1,14 +1,14 @@
 import React from 'react';
 import useSurveyStore from "@/store/SurveyState";
-import {ConditionalQuestion} from "@/app/survey/types/survey";
-import NextSectionSelector from "@/app/survey/question-components/NextSectionSelector";
+import {ConditionalQuestion} from "@/app/survey/_types/survey";
+import NextSectionSelector from "@/app/survey/_question-components/NextSectionSelector";
 
-interface SingleSelectionProps {
+interface MultipleSelectionProps {
     sectionId: string;
     question: ConditionalQuestion;
 }
 
-const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) => {
+const MultipleSection: React.FC<MultipleSelectionProps> = ({sectionId, question}) => {
     const {updateQuestionAnswer} = useSurveyStore();
 
 
@@ -64,4 +64,4 @@ const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) 
     );
 };
 
-export default SingleSelection;
+export default MultipleSection;

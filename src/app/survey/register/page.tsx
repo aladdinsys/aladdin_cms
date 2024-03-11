@@ -1,6 +1,6 @@
 'use client'
 
-import SurveyForm from "@/app/survey/form";
+import SurveyForm from "@/app/survey/register/form";
 import {useEffect, useState} from "react";
 import {getSurveys} from "@/apis/survey";
 

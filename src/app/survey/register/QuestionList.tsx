@@ -1,8 +1,8 @@
 import React from 'react';
 
 import useSurveyStore from "@/store/SurveyState";
-import {Question, QuestionType} from "@/app/survey/types/survey";
-import {componentMap, questionTypeLabels} from "@/app/survey/constants";
+import {Question, QuestionType} from "@/app/survey/_types/survey";
+import {componentMap, questionTypeLabels} from "@/app/survey/_constants";
 
 interface QuestionListProps {
     questions: Question[];

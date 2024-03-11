@@ -10,6 +10,14 @@ export const getSurveys = async () => {
     return data;
 }
 
+export const getSurveyById = async (id: string) => {
+    const { data } = await api.get<Response<SurveyResponse[]>>(`/surveys/${id}`)
+        .then((response) => response)
+        .catch((error) => error);
+
+    return data;
+}
+
 export const postSurvey = async (survey: SurveyRequest) => {
     const { data } = await api.post<Response<SurveyResponse>>('/surveys', survey)
         .then((response) => response)
