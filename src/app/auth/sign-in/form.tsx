@@ -32,7 +32,6 @@ const SignInForm = () => {
 
         const response = body.data;
         if(response.status !== 'OK') {
-            alert(response.message);
             return;
         }
 
