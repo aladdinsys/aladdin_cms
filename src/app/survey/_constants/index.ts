@@ -1,10 +1,10 @@
 import {QuestionComponentMap} from "@/app/survey/_types/survey";
-import BooleanQuestion from "@/app/survey/_question-components/Boolean";
-import LongAnswerQuestion from "@/app/survey/_question-components/LongAnswer";
-import ShortAnswer from "@/app/survey/_question-components/ShortAnswer";
-import FiveLikertQuestion from "@/app/survey/_question-components/FiveLikert";
-import SingleSelection from "@/app/survey/_question-components/SingleSelection";
-import MultipleSelection from "@/app/survey/_question-components/MultipleSelection";
+import BooleanQuestion from "@/app/survey/_survey-components/question-components/Boolean";
+import LongAnswerQuestion from "@/app/survey/_survey-components/question-components/LongAnswer";
+import ShortAnswer from "@/app/survey/_survey-components/question-components/ShortAnswer";
+import FiveLikertQuestion from "@/app/survey/_survey-components/question-components/FiveLikert";
+import SingleSelection from "@/app/survey/_survey-components/question-components/SingleSelection";
+import MultipleSelection from "@/app/survey/_survey-components/question-components/MultipleSelection";
 
 export const questionTypeLabels = {
     'FIVE-LIKERT': '5점 리쿼트',

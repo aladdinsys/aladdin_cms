@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 
 import useSurveyStore from "@/store/SurveyState";
-import NextSectionSelector from "@/app/survey/_question-components/NextSectionSelector";
+import NextSectionSelector from "@/app/survey/_survey-components/question-components/NextSectionSelector";
 import {ConditionalQuestion} from "@/app/survey/_types/survey";
 import Input from "@/components/atoms/Input";
 

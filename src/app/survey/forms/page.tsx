@@ -3,11 +3,16 @@
 import {useCallback, useEffect, useState} from "react";
 import {getSurveysOwn} from "@/apis/survey";
 import {SurveyResponse} from "@/apis/types/survey";
-import Link from "next/link";
+import useSurveyStore from "@/store/SurveyState";
+import Button from "@/components/atoms/Button";
+import {useRouter} from "next/navigation";
 
 export default function SurveyForms() {
 
+    const router = useRouter();
     const [surveys, setSurveys] = useState<Array<SurveyResponse>>([]);
+
+    const { setId, reset } = useSurveyStore();
 
     useEffect(() => {
         retrieveList();
@@ -19,17 +24,26 @@ export default function SurveyForms() {
         })
     }, []);
 
+    const handleOnClick = (survey?: SurveyResponse) => {
+
+        if(survey) {
+            setId(survey.id);
+        } else {
+            reset();
+        }
+
+        router.push('/survey/forms/edit');
+    }
 
     return (
         <div className={'flex flex-col gap-2'}>
+            <Button color={"green"} onClick={() => handleOnClick()}>
+                등록
+            </Button>
             {surveys.map((survey) => (
-                <Link href={{
-                        pathname: `/survey/forms/edit`,
-                        query: {id: survey.id}
-                    }}
-                      key={survey.id}>
+                <Button key={survey.id} onClick={() => handleOnClick(survey)}>
                     {survey.title}
-                </Link>
+                </Button>
             ))}
         </div>
     );

@@ -60,8 +60,8 @@ const SignInForm = () => {
 
     return (
         <div className={"py-4 min-h-[30rem] flex flex-col gap-2"}>
-            <InputField color={"gray"} type={"text"} name={"userId"} label={"사용자 아이디"} ref={userIdRef} />
-            <InputField type={"password"} name={"password"} label={"비밀 번호"} ref={passwordRef} onKeyDown={onPasswordKeyDown} />
+            <InputField id={"userId"} color={"gray"} type={"text"} name={"userId"} label={"사용자 아이디"} ref={userIdRef} />
+            <InputField id={"password"} type={"password"} name={"password"} label={"비밀 번호"} ref={passwordRef} onKeyDown={onPasswordKeyDown} />
             <Button onClick={signIn} >
                 로그인
             </Button>

@@ -2,19 +2,15 @@
 
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import useSurveyStore from "@/store/SurveyState";
-import SectionForm from "@/app/survey/forms/edit/SectionForm";
+import SectionForm from "@/app/survey/_survey-components/SectionForm";
 import {getSurveyById, patchSurvey, postSurvey, publishSurvey} from "@/apis/survey";
 import {SurveyRequest} from "@/apis/types/survey";
 import InputField from "@/components/molecule/InputField";
 import Button from "@/components/atoms/Button";
 
-export type SurveyFormProps = {
-    id?: string;
-}
+const SurveyForm = () => {
 
-const SurveyForm = ({id, ...props}: SurveyFormProps) => {
-
-    const { sections, title, description, setTitle, setDescription, setSections, addSection } = useSurveyStore();
+    const { id, title, description, sections, setTitle, setDescription, setId, setSections, addSection, reset } = useSurveyStore();
 
     const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
@@ -30,12 +26,7 @@ const SurveyForm = ({id, ...props}: SurveyFormProps) => {
         try {
             let responseData: Response;
 
-            if(id) {
-                responseData = await patchSurvey(id, surveyRequest);
-                responseData = await publishSurvey(id);
-            } else {
-                responseData = await postSurvey(surveyRequest);
-            }
+            responseData = await postSurvey(surveyRequest);
 
             console.log(responseData);
 
@@ -44,12 +35,8 @@ const SurveyForm = ({id, ...props}: SurveyFormProps) => {
         }
     };
 
-    useEffect(() => {
-        retrieveForm();
-    }, []);
-
     const retrieveForm = useCallback(() => {
-        if(id) {
+        if(id !== null) {
             getSurveyById(id).then((response) => {
                 const {
                     title, description, content
@@ -58,19 +45,24 @@ const SurveyForm = ({id, ...props}: SurveyFormProps) => {
                 setTitle(title);
                 setDescription(description);
 
-
                 setSections(JSON.parse(content));
             })
         }
-    }, [id, setSections]);
+
+    }, [id, setDescription, setId, setSections, setTitle]);
+
+    useEffect(() => {
+        retrieveForm();
+    }, [id, title, description, retrieveForm]);
+
+    if(!sections) return <div>Loading</div>;
+
 
 
     return (
-        <div
-            className="survey-form-container min-w-[33%] bg-white dark:bg-gray-100 border px-8 py-4"
-        >
-            <InputField type={"text"} defaultValue={title} className={"text-xl"} name={"title"} label={"타이틀"} ref={titleRef} />
-            <InputField type={"text"} defaultValue={description} name={"description"} label={"설명"} ref={descriptionRef}/>
+        <div className="survey-form-container min-w-[33%] bg-white dark:bg-gray-100 border px-8 py-4">
+            <InputField id={`title`} type={"text"} defaultValue={title ?? ''} className={"text-xl"} name={"title"} label={"타이틀"} ref={titleRef} />
+            <InputField id={`description`} type={"text"} defaultValue={description ?? ''} name={"description"} label={"설명"} ref={descriptionRef}/>
 
             <div className={"sections-wrapper flex flex-col gap-4 py-2"}>
                 {sections.map((section) => (

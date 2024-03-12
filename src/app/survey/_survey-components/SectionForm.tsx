@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent} from 'react';
 
-import QuestionForm from "@/app/survey/forms/edit/QuestionForm";
+import QuestionForm from "@/app/survey/_survey-components/QuestionForm";
 import useSurveyStore from "@/store/SurveyState";
 import {Section} from "@/app/survey/_types/survey";
 import Button from "@/components/atoms/Button";

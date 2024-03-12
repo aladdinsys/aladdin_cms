@@ -1,17 +1,17 @@
 import React from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import {ConditionalQuestion} from "@/app/survey/_types/survey";
-import NextSectionSelector from "@/app/survey/_question-components/NextSectionSelector";
+import NextSectionSelector from "@/app/survey/_survey-components/question-components/NextSectionSelector";
 import Input from "@/components/atoms/Input";
 import {generateUID} from "@/utils/uid";
 import Button from "@/components/atoms/Button";
 
-interface MultipleSelectionProps {
+interface SingleSelectionProps {
     sectionId: string;
     question: ConditionalQuestion;
 }
 
-const MultipleSection: React.FC<MultipleSelectionProps> = ({sectionId, question}) => {
+const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) => {
     const {updateQuestionAnswer} = useSurveyStore();
 
 
@@ -64,14 +64,15 @@ const MultipleSection: React.FC<MultipleSelectionProps> = ({sectionId, question}
                         defaultValue={answer.label}
                         onChange={(e) => handleAnswerChange(index, e.currentTarget.value)}
                     />
+                    <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>
                     <Button color={"red"} onClick={() => handleDeleteAnswer(index)}>
                         X
                     </Button>
                 </div>
             ))}
-            <Button onClick={handleAddAnswer}>답변 추가</Button>
+            <Button color={"green"} onClick={handleAddAnswer}>답변 추가</Button>
         </div>
     );
 };
 
-export default MultipleSection;
+export default SingleSelection;

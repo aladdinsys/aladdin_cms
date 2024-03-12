@@ -2,14 +2,12 @@ import {create} from 'zustand';
 import {QuestionType, Section, Survey} from "@/app/survey/_types/survey";
 import {generateUID} from "@/utils/uid";
 
-interface SurveyState {
-    title: string;
-    description: string;
+type Actions = {
+    setId: (id: string | null) => void,
     setTitle: (title:string) => void,
     setDescription: (description:string) => void,
-
-    sections: Section[];
     setSections: (sections: Section[]) => void;
+
     addSection: () => void;
     updateSection: (sectionId: string, updateFn: (section: Section) => Section) => void;
     deleteSection: (sectionId: string) => void;
@@ -20,16 +18,27 @@ interface SurveyState {
     updateQuestion: (sectionId: string, questionId: string, newText: string) => void;
     updateQuestionType: (sectionId: string, questionId: string, newType: QuestionType) => void;
     updateQuestionAnswer: (sectionId: string, questionId: string, newAnswers: any[]) => void;
+    reset: () => void
 }
 
-const useSurveyStore = create<SurveyState>(set => ({
+type State = {
+    id: string | null;
+    title: string;
+    description: string;
+    sections: Section[];
+}
+const initialState: State = {
+    id: null,
     title: '',
     description: '',
-    setTitle: (title:string) => set({title}),
-    setDescription: (description:string) => set({description}),
-
-
     sections: [],
+}
+
+const useSurveyStore = create<State & Actions>()((set, get) => ({
+    ...initialState,
+    setId: (id: string | null) => set({id}),
+    setTitle: (title:string) => set({title}),
+    setDescription: (description:string) => set({ description }),
     setSections: (sections) => set({ sections }),
     addSection: () => set((state) => ({
         sections: [
@@ -143,6 +152,10 @@ const useSurveyStore = create<SurveyState>(set => ({
             return section;
         })
     })),
+
+    reset: () => {
+        set(initialState)
+    }
 
 
 }));

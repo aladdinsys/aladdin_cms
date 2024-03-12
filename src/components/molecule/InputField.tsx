@@ -4,6 +4,7 @@ import {twMerge} from "tailwind-merge";
 
 type InputFieldProps = {
     type: string;
+    id: string;
     name: string;
     label: string;
     defaultValue?: string;
@@ -25,6 +26,7 @@ const InputField = forwardRef(
     (
                 {
                     type,
+                    id,
                     name,
                     label,
                     defaultValue,
@@ -45,8 +47,8 @@ const InputField = forwardRef(
                 defaultClass,
                 colorClasses[color]
             )}>
-                <label className="block mb-2 font-bold" htmlFor={name}>{label}</label>
-                <Input className={className} id={name} type={type} name={name} ref={ref} defaultValue={defaultValue} onKeyDown={onKeyDown} onChange={onChange} placeholder={placeholder} readOnly={readOnly} />
+                <label className="block mb-2 font-bold" htmlFor={id}>{label}</label>
+                <Input className={className} id={id} type={type} name={name} ref={ref} defaultValue={defaultValue} onKeyDown={onKeyDown} onChange={onChange} placeholder={placeholder} readOnly={readOnly} />
             </div>
         )
 })
