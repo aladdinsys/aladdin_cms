@@ -34,7 +34,7 @@ export const postSurvey = async (survey: SurveyRequest) => {
     return data;
 }
 
-export const patchSurvey = async (id: number, survey: SurveyRequest) => {
+export const patchSurvey = async (id: string, survey: SurveyRequest) => {
         const { data } = await api.patch<Response<null>>(`/surveys/${id}`, survey)
             .then((response) => response)
             .catch((error) => error);
@@ -42,7 +42,7 @@ export const patchSurvey = async (id: number, survey: SurveyRequest) => {
         return data;
 }
 
-export const publishSurvey = async (id: number) => {
+export const publishSurvey = async (id: string) => {
     const { data } = await api.patch<Response<null>>(`/surveys/${id}/publish`)
         .then((response) => response)
         .catch((error) => error);

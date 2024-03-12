@@ -3,7 +3,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import SectionForm from "@/app/survey/forms/edit/SectionForm";
-import {getSurveyById, postSurvey} from "@/apis/survey";
+import {getSurveyById, patchSurvey, postSurvey, publishSurvey} from "@/apis/survey";
 import {SurveyRequest} from "@/apis/types/survey";
 import InputField from "@/components/molecule/InputField";
 import Button from "@/components/atoms/Button";
@@ -14,7 +14,7 @@ export type SurveyFormProps = {
 
 const SurveyForm = ({id, ...props}: SurveyFormProps) => {
 
-    const { sections, setSections, addSection } = useSurveyStore();
+    const { sections, title, description, setTitle, setDescription, setSections, addSection } = useSurveyStore();
 
     const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
@@ -24,11 +24,21 @@ const SurveyForm = ({id, ...props}: SurveyFormProps) => {
         const surveyRequest: SurveyRequest = {
             title: titleRef.current?.value!,
             description: descriptionRef.current?.value!,
-            content: JSON.stringify({contents: sections})
+            content: JSON.stringify(sections)
         }
 
         try {
-            const responseData = await postSurvey(surveyRequest);
+            let responseData: Response;
+
+            if(id) {
+                responseData = await patchSurvey(id, surveyRequest);
+                responseData = await publishSurvey(id);
+            } else {
+                responseData = await postSurvey(surveyRequest);
+            }
+
+            console.log(responseData);
+
         } catch (error) {
 
         }
@@ -44,17 +54,23 @@ const SurveyForm = ({id, ...props}: SurveyFormProps) => {
                 const {
                     title, description, content
                 } = response.result;
+
+                setTitle(title);
+                setDescription(description);
+
+
                 setSections(JSON.parse(content));
             })
         }
     }, [id, setSections]);
 
+
     return (
         <div
             className="survey-form-container min-w-[33%] bg-white dark:bg-gray-100 border px-8 py-4"
         >
-            <InputField type={"text"} className={"text-xl"} name={"title"} label={"타이틀"} ref={titleRef} />
-            <InputField type={"text"} name={"description"} label={"설명"} ref={descriptionRef}/>
+            <InputField type={"text"} defaultValue={title} className={"text-xl"} name={"title"} label={"타이틀"} ref={titleRef} />
+            <InputField type={"text"} defaultValue={description} name={"description"} label={"설명"} ref={descriptionRef}/>
 
             <div className={"sections-wrapper flex flex-col gap-4 py-2"}>
                 {sections.map((section) => (

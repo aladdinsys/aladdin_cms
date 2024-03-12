@@ -16,7 +16,7 @@ api.interceptors.request.use((config) => {
 });
 api.interceptors.response.use(
     (response) => response,
-    (error) => errorHandler({...error}),
+    (error) => errorHandler(error),
 );
 
 const errorHandler = async (error: any) => {

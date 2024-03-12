@@ -46,7 +46,7 @@ const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, que
             {sections.map((section, index) => (
                 sectionId !== section.id && (
                     <option key={index} value={section.id}>
-                        {`${section.id}섹션(${section.title})로 이동`}
+                        {`(${!section.title || section.title.length < 1 ? '이름 없음' : section.title})섹션으로 이동`}
                     </option>
                 )
             ))}

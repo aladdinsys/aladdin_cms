@@ -3,6 +3,11 @@ import {QuestionType, Section, Survey} from "@/app/survey/_types/survey";
 import {generateUID} from "@/utils/uid";
 
 interface SurveyState {
+    title: string;
+    description: string;
+    setTitle: (title:string) => void,
+    setDescription: (description:string) => void,
+
     sections: Section[];
     setSections: (sections: Section[]) => void;
     addSection: () => void;
@@ -18,6 +23,12 @@ interface SurveyState {
 }
 
 const useSurveyStore = create<SurveyState>(set => ({
+    title: '',
+    description: '',
+    setTitle: (title:string) => set({title}),
+    setDescription: (description:string) => set({description}),
+
+
     sections: [],
     setSections: (sections) => set({ sections }),
     addSection: () => set((state) => ({
