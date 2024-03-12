@@ -6,9 +6,13 @@ type InputFieldProps = {
     type: string;
     name: string;
     label: string;
-    value?: string;
+    defaultValue?: string;
     color?: string;
+    placeholder?: string;
+    className?: string;
+    readOnly?: boolean;
     onKeyDown?: (event: FormEvent<HTMLInputElement>) => void;
+    onChange?: (event: FormEvent<HTMLInputElement>) => void;
 }
 
 
@@ -19,7 +23,18 @@ const colorClasses: {[key: string]: string} = {
 
 const InputField = forwardRef(
     (
-                {type, name, label, value, color = 'violet', onKeyDown}: InputFieldProps,
+                {
+                    type,
+                    name,
+                    label,
+                    defaultValue,
+                    color = 'violet',
+                    className,
+                    onKeyDown,
+                    onChange,
+                    placeholder,
+                    readOnly
+                }: InputFieldProps,
                 ref: ForwardedRef<HTMLInputElement>
             ) => {
 
@@ -30,8 +45,8 @@ const InputField = forwardRef(
                 defaultClass,
                 colorClasses[color]
             )}>
-                <label htmlFor={name}>{label}</label>
-                <Input id={name} type={type} name={name} ref={ref} defaultValue={value} onKeyDown={onKeyDown} />
+                <label className="block mb-2 font-bold" htmlFor={name}>{label}</label>
+                <Input className={className} id={name} type={type} name={name} ref={ref} defaultValue={defaultValue} onKeyDown={onKeyDown} onChange={onChange} placeholder={placeholder} readOnly={readOnly} />
             </div>
         )
 })

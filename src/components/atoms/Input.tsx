@@ -17,7 +17,17 @@ type InputProps = {
 }
 
 const Input = forwardRef((
-                {type, id, name, defaultValue, className, onKeyDown, onChange, placeholder, readOnly}: InputProps,
+                {
+                    type,
+                    id,
+                    name,
+                    defaultValue,
+                    className,
+                    onKeyDown,
+                    onChange,
+                    placeholder,
+                    readOnly
+                }: InputProps,
                 ref: ForwardedRef<HTMLInputElement>
             ) => {
                 return (
@@ -25,7 +35,7 @@ const Input = forwardRef((
                         id={id ?? name}
                         type={type}
                         className={twMerge(
-                            `bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 border`,
+                            `bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 select-none border`,
                             className
                         )}
                         ref={ref}

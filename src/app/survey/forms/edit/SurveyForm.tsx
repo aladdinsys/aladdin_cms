@@ -34,11 +34,6 @@ const SurveyForm = ({id, ...props}: SurveyFormProps) => {
         }
     };
 
-    const [
-        surveyFormProps,
-        setSurveyFormProps
-    ] = useState<SurveyFormProps>({});
-
     useEffect(() => {
         retrieveForm();
     }, []);
@@ -56,13 +51,13 @@ const SurveyForm = ({id, ...props}: SurveyFormProps) => {
 
     return (
         <div
-            className="survey-form-container"
+            className="survey-form-container min-w-[33%] bg-white dark:bg-gray-100 border px-8 py-4"
         >
-            <InputField type={"text"} name={"title"} label={"타이틀"} ref={titleRef} />
+            <InputField type={"text"} className={"text-xl"} name={"title"} label={"타이틀"} ref={titleRef} />
             <InputField type={"text"} name={"description"} label={"설명"} ref={descriptionRef}/>
 
-            <div className={"sections-wrapper flex flex-col gap-4 p-2"}>
-                {id && sections.map((section) => (
+            <div className={"sections-wrapper flex flex-col gap-4 py-2"}>
+                {sections.map((section) => (
                     <SectionForm key={section.id} section={section}/>
                 ))}
             </div>

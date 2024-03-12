@@ -51,9 +51,13 @@ const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) 
     const tempInputId = generateUID();
 
     return (
-        <div>
+        <div className={"flex flex-col gap-2"}>
             {question.answers.map((answer, index) => (
-                <div key={index}>
+                <div key={index} className={"flex flex-row gap-2 relative"}>
+                    <input
+                        type="checkbox"
+                        className={"select-none pointer-events-none"}
+                    />
                     <Input
                         name={tempInputId}
                         type="text"
@@ -61,7 +65,9 @@ const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) 
                         onChange={(e) => handleAnswerChange(index, e.currentTarget.value)}
                     />
                     <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>
-                    <Button color={"red"} onClick={() => handleDeleteAnswer(index)}>답변 삭제</Button>
+                    <Button color={"red"} onClick={() => handleDeleteAnswer(index)}>
+                        X
+                    </Button>
                 </div>
             ))}
             <Button color={"green"} onClick={handleAddAnswer}>답변 추가</Button>

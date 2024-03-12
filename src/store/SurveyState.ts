@@ -1,5 +1,6 @@
 import {create} from 'zustand';
 import {QuestionType, Section, Survey} from "@/app/survey/_types/survey";
+import {generateUID} from "@/utils/uid";
 
 interface SurveyState {
     sections: Section[];
@@ -22,7 +23,9 @@ const useSurveyStore = create<SurveyState>(set => ({
     addSection: () => set((state) => ({
         sections: [
             ...state.sections,
-            { id: `${state.sections.length + 1}`, title: '', description: '', questions: [] }
+            // { id: `${state.sections.length + 1}`, title: '', description: '', questions: [] }
+            { id: generateUID(), title: '', description: '', questions: [] }
+
         ]
     })),
     updateSection: (sectionId, updateFn) => set(state => ({
