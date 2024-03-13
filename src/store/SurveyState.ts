@@ -156,8 +156,6 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
     reset: () => {
         set(initialState)
     }
-
-
 }));
 
 export default useSurveyStore;

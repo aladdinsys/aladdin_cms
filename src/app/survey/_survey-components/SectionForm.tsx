@@ -31,6 +31,7 @@ export default function SectionForm({section}: SurveySectionProps) {
         <div className="flex flex-col py-2 border rounded-md border-black">
             <div className={"flex flex-col px-2"}>
                 <InputField
+                    id={tempTitleName}
                     name={tempTitleName}
                     type="text"
                     label={"섹션 제목"}
@@ -39,6 +40,7 @@ export default function SectionForm({section}: SurveySectionProps) {
                     placeholder="섹션 제목을 입력해주세요."
                 />
                 <InputField
+                    id={tempDescName}
                     name={tempDescName}
                     type="text"
                     label={"섹션 설명"}

@@ -13,7 +13,7 @@ import {ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE} from "@/constants/auth";
 const SignInForm = () => {
 
     const router = useRouter();
-    const { setAuth, signOut } = useUserState();
+    const { setAuth } = useUserState();
 
     const userIdRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -51,12 +51,6 @@ const SignInForm = () => {
         router.replace('/');
         router.refresh();
     }
-
-    useEffect(() => {
-        // signOut();
-        // removeCookie(ACCESS_TOKEN_COOKIE, {path: '/'});
-        // removeCookie(REFRESH_TOKEN_COOKIE, {path: '/'});
-    },[signOut])
 
     return (
         <div className={"py-4 min-h-[30rem] flex flex-col gap-2"}>

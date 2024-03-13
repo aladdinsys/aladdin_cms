@@ -24,12 +24,12 @@ const errorHandler = async (error: any) => {
 
         const res = await refreshToken();
 
-        if(res === 'OK') {
+        if(res.status === 'OK') {
             return api.request(error.config);
         }
     }
 
-    if( error.response.status === 400) {
+    if(error.response.status === 400) {
         return await Promise.reject(error.response.data.message);
     }
 
@@ -40,13 +40,12 @@ const errorHandler = async (error: any) => {
 }
 
 
-async function refreshToken() {
+export async function refreshToken(): Promise<Response<SignInResponse>> {
     removeCookie(ACCESS_TOKEN_COOKIE);
 
     if(!getCookie(REFRESH_TOKEN_COOKIE)) {
         window.location.href = '/auth/sign-in';
-        return;
-        // return Promise.reject('Refresh Token is not found');
+        return Promise.reject('Refresh Token is not found');
     }
 
     return api.post<Response<SignInResponse>>('/auth/refresh-token', {})
@@ -63,7 +62,7 @@ async function refreshToken() {
                 },
             );
 
-            return 'OK';
+            return response;
         })
         .catch((error) => error);
 }
