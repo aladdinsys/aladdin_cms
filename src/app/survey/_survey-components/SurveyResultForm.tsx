@@ -7,7 +7,7 @@ import {ElasticQuery, ElasticSurveyHit, Match} from "@/apis/types/survey_elastic
 import {getResultByQuery} from "@/apis/survey_elastic";
 import {getSurveyById} from "@/apis/survey";
 import useSurveyResponseState from "@/store/SurveyResponseState";
-import PollForm from "@/app/survey/result/PollForm";
+import PollForm from "@/app/survey/_survey-components/PollForm";
 import {Question, Section} from "@/app/survey/_types/survey";
 
 type SurveyResultFormProps = {

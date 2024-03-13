@@ -1,4 +1,4 @@
-import SurveyResultForm from "@/app/survey/result/SurveyResultForm";
+import SurveyResultForm from "@/app/survey/_survey-components/SurveyResultForm";
 
 const ResultPage = () => {
     return <SurveyResultForm id={"11"} />;

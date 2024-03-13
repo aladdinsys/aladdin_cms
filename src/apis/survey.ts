@@ -26,6 +26,18 @@ export const getSurveyById = async (id: string) => {
     return data;
 }
 
+export const getCoord = async (address: string) => {
+    const { data } = await api.get<Response<SurveyResponse[]>>(`/open-api/vworld/coord/${address}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'API-KEY': `${process.env.NEXT_PUBLIC_API_KEY}`
+        }})
+        .then((response) => response)
+        .catch((error) => error);
+
+    return data;
+}
+
 export const postSurvey = async (survey: SurveyRequest) => {
     const { data } = await api.post<Response<SurveyResponse>>('/surveys', survey)
         .then((response) => response)

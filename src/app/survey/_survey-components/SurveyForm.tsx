@@ -3,14 +3,19 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import SectionForm from "@/app/survey/_survey-components/SectionForm";
-import {getSurveyById, patchSurvey, postSurvey, publishSurvey} from "@/apis/survey";
+import {getCoord, getSurveyById, postSurvey } from "@/apis/survey";
 import {SurveyRequest} from "@/apis/types/survey";
 import InputField from "@/components/molecule/InputField";
 import Button from "@/components/atoms/Button";
+import DaumPostcode from 'react-daum-postcode';
+import MapComponent from "@/app/survey/_survey-components/Map";
 
 const SurveyForm = () => {
 
-    const { id, title, description, sections, setTitle, setDescription, setId, setSections, addSection, reset } = useSurveyStore();
+    const { id, title, description, sections, setTitle, setDescription, setId, setSections, addSection } = useSurveyStore();
+
+    const [openPostcode, setOpenPostcode] = useState(true);
+    const [mapCenter, setMapCenter] = useState();
 
     const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
@@ -55,14 +60,44 @@ const SurveyForm = () => {
         retrieveForm();
     }, [id, title, description, retrieveForm]);
 
-    if(!sections) return <div>Loading</div>;
 
+    const handle = {
+        selectAddress: async (data: any) => {
+
+            setOpenPostcode(false);
+
+            const { roadAddress } = data;
+
+            const response = await getCoord(roadAddress);
+            const { result } = response;
+
+            setMapCenter(JSON.parse(result).response.result.point);
+
+        },
+    }
+
+    if(!sections) return <div>Loading</div>;
 
 
     return (
         <div className="survey-form-container min-w-[33%] bg-white dark:bg-gray-100 border px-8 py-4">
-            <InputField id={`title`} type={"text"} defaultValue={title ?? ''} className={"text-xl"} name={"title"} label={"타이틀"} ref={titleRef} />
-            <InputField id={`description`} type={"text"} defaultValue={description ?? ''} name={"description"} label={"설명"} ref={descriptionRef}/>
+            <InputField id={`title`} type={"text"} defaultValue={title ?? ''} className={"text-xl"} name={"title"}
+                        label={"타이틀"} ref={titleRef}/>
+            <InputField id={`description`} type={"text"} defaultValue={description ?? ''} name={"description"}
+                        label={"설명"} ref={descriptionRef}/>
+
+            <div>
+                {openPostcode &&
+                    <DaumPostcode
+                        onComplete={handle.selectAddress}
+                        autoClose={false}
+                        defaultQuery='중앙로 1079 백석역 더리브스타일'
+                    />}
+                {!openPostcode &&
+                    <MapComponent center={mapCenter}/>
+                }
+
+            </div>
 
             <div className={"sections-wrapper flex flex-col gap-4 py-2"}>
                 {sections.map((section) => (
