@@ -18,7 +18,6 @@ export default function Nav() {
 
     useEffect(() => {
         if(!name && getCookie(REFRESH_TOKEN_COOKIE)) {
-
             refreshToken().then((res) => {
                 const {
                     status,
@@ -41,7 +40,6 @@ export default function Nav() {
                 }
             });
         }
-
     }, []);
 
     const handleLogout = () => {

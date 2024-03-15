@@ -2,6 +2,10 @@ export type SurveyRequest = {
     title: string;
     description: string;
     content: string;
+    center: {
+        x: number;
+        y: number;
+    }
 }
 
 export type SurveyResponse = {

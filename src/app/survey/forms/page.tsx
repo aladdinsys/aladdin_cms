@@ -26,11 +26,9 @@ export default function SurveyForms() {
 
     const handleOnClick = (survey?: SurveyResponse) => {
 
-        if(survey) {
-            setId(survey.id);
-        } else {
-            reset();
-        }
+        reset();
+
+        if(survey) setId(survey.id);
 
         router.push('/survey/forms/edit');
     }

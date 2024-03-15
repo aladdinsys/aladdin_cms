@@ -3,19 +3,21 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import SectionForm from "@/app/survey/_survey-components/SectionForm";
-import {getCoord, getSurveyById, postSurvey } from "@/apis/survey";
+import {getCoord, getSurveyById, patchSurvey, postSurvey} from "@/apis/survey";
 import {SurveyRequest} from "@/apis/types/survey";
 import InputField from "@/components/molecule/InputField";
 import Button from "@/components/atoms/Button";
 import DaumPostcode from 'react-daum-postcode';
 import MapComponent from "@/app/survey/_survey-components/Map";
+import {useRouter} from "next/navigation";
 
 const SurveyForm = () => {
 
-    const { id, title, description, sections, setTitle, setDescription, setId, setSections, addSection } = useSurveyStore();
+    const router = useRouter();
+
+    const { id, title, description, sections, center, setTitle, setDescription, setId, setSections, addSection, setCenter } = useSurveyStore();
 
     const [openPostcode, setOpenPostcode] = useState(true);
-    const [mapCenter, setMapCenter] = useState();
 
     const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
@@ -25,14 +27,20 @@ const SurveyForm = () => {
         const surveyRequest: SurveyRequest = {
             title: titleRef.current?.value!,
             description: descriptionRef.current?.value!,
-            content: JSON.stringify(sections)
+            content: JSON.stringify(sections),
+            center: center
         }
 
         try {
             let responseData: Response;
 
-            responseData = await postSurvey(surveyRequest);
+            if(id !== null) {
+                responseData = await patchSurvey(id, surveyRequest);
+            } else {
+                responseData = await postSurvey(surveyRequest);
+            }
 
+            // router.push('/survey/forms');
             console.log(responseData);
 
         } catch (error) {
@@ -64,15 +72,19 @@ const SurveyForm = () => {
     const handle = {
         selectAddress: async (data: any) => {
 
-            setOpenPostcode(false);
-
             const { roadAddress } = data;
 
             const response = await getCoord(roadAddress);
             const { result } = response;
 
-            setMapCenter(JSON.parse(result).response.result.point);
+            const { point } = JSON.parse(result).response.result;
 
+            setCenter({
+                x: Number(point.x),
+                y: Number(point.y),
+            });
+
+            setOpenPostcode(false);
         },
     }
 
@@ -88,13 +100,18 @@ const SurveyForm = () => {
 
             <div>
                 {openPostcode &&
-                    <DaumPostcode
-                        onComplete={handle.selectAddress}
-                        autoClose={false}
-                        defaultQuery='중앙로 1079 백석역 더리브스타일'
-                    />}
+                    <div className={"p-2"}>
+                        <p className={"block mb-2 font-bold"}> 주소지를 입력해주세요 </p>
+                        <DaumPostcode
+                            className={"border border-black"}
+                            onComplete={handle.selectAddress}
+                            autoClose={false}
+                            defaultQuery='중앙로 1079 백석역 더리브스타일'
+                        />
+                    </div>
+                }
                 {!openPostcode &&
-                    <MapComponent center={mapCenter}/>
+                    <MapComponent center={center}/>
                 }
 
             </div>

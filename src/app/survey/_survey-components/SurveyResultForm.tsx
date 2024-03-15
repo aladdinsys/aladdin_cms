@@ -82,7 +82,7 @@ const SurveyResultForm = (props: SurveyResultFormProps) => {
     return (
         <>
             <div className={"flex flex-col items-center"}>
-                <Image src={nextLogo} alt={"넥스트 로고"}/>
+                {/*<Image src={nextLogo} alt={"넥스트 로고"}/>*/}
                 <p className={"py-4"}>{survey.title}</p>
                 <div className={"flex flex-col gap-2"}>
                     {sections.map((section: Section, index: number) =>

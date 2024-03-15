@@ -16,15 +16,15 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
 type MapComponentProps = {
-    center?: {x: string, y: string } ;
+    center?: {x: number, y: number} ;
 }
 
 const MapComponent = ({center}: MapComponentProps ) => {
 
     const coord = center ?
         [
-            Number(center.x),
-            Number(center.y)
+            center.x,
+            center.y
         ]
         : [126.784587, 37.645143];
     

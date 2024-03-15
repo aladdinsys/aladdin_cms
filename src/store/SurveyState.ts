@@ -7,6 +7,7 @@ type Actions = {
     setTitle: (title:string) => void,
     setDescription: (description:string) => void,
     setSections: (sections: Section[]) => void;
+    setCenter: (center: {x: number, y: number}) => void;
 
     addSection: () => void;
     updateSection: (sectionId: string, updateFn: (section: Section) => Section) => void;
@@ -26,12 +27,20 @@ type State = {
     title: string;
     description: string;
     sections: Section[];
+    center: {
+        x: number;
+        y: number;
+    }
 }
 const initialState: State = {
     id: null,
     title: '',
     description: '',
     sections: [],
+    center: {
+        x: 0,
+        y: 0
+    }
 }
 
 const useSurveyStore = create<State & Actions>()((set, get) => ({
@@ -40,6 +49,7 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
     setTitle: (title:string) => set({title}),
     setDescription: (description:string) => set({ description }),
     setSections: (sections) => set({ sections }),
+    setCenter: (center) => set({ center }),
     addSection: () => set((state) => ({
         sections: [
             ...state.sections,
