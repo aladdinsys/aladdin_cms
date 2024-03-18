@@ -8,7 +8,7 @@ type SurveyResponseState = {
 
 const useSurveyResponseState = create<SurveyResponseState>((set) => ({
     survey: {
-        id: 0,
+        id: '',
         title: '',
         description: '',
         content: '',

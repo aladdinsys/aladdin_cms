@@ -1,4 +1,4 @@
-import PollProgress from "@/app/survey/result/PollProgress";
+import PollProgress from "@/app/survey/_survey-components/PollProgress";
 import {twMerge} from "tailwind-merge";
 
 type PollFormProps = {

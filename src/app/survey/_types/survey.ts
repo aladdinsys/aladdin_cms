@@ -1,9 +1,7 @@
 import React from "react";
 
 export type Survey = {
-    title: string;
-    sections: Array<Section>;
-    description: string;
+    sections: Section[];
 }
 export type Section = {
     id: string;

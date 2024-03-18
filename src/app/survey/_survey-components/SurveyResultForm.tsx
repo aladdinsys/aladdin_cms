@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 import nextLogo from "/public/next.svg";
 import React, {useEffect, useState} from "react";
@@ -5,8 +7,8 @@ import {ElasticQuery, ElasticSurveyHit, Match} from "@/apis/types/survey_elastic
 import {getResultByQuery} from "@/apis/survey_elastic";
 import {getSurveyById} from "@/apis/survey";
 import useSurveyResponseState from "@/store/SurveyResponseState";
-import PollForm from "@/app/survey/result/PollForm";
-import {Question, Section} from "@/app/survey/type/survey";
+import PollForm from "@/app/survey/_survey-components/PollForm";
+import {Question, Section} from "@/app/survey/_types/survey";
 
 type SurveyResultFormProps = {
     id: string;
@@ -80,7 +82,7 @@ const SurveyResultForm = (props: SurveyResultFormProps) => {
     return (
         <>
             <div className={"flex flex-col items-center"}>
-                <Image src={nextLogo} alt={"넥스트 로고"}/>
+                {/*<Image src={nextLogo} alt={"넥스트 로고"}/>*/}
                 <p className={"py-4"}>{survey.title}</p>
                 <div className={"flex flex-col gap-2"}>
                     {sections.map((section: Section, index: number) =>

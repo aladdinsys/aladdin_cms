@@ -10,8 +10,28 @@ export const getSurveys = async () => {
     return data;
 }
 
+export const getSurveysOwn = async () => {
+    const { data } = await api.get<Response<SurveyResponse[]>>('/surveys/find-own')
+        .then((response) => response)
+        .catch((error) => error);
+
+    return data;
+}
+
 export const getSurveyById = async (id: string) => {
     const { data } = await api.get<Response<SurveyResponse[]>>(`/surveys/${id}`)
+        .then((response) => response)
+        .catch((error) => error);
+
+    return data;
+}
+
+export const getCoord = async (address: string) => {
+    const { data } = await api.get<Response<SurveyResponse[]>>(`/open-api/vworld/coord/${address}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'API-KEY': `${process.env.NEXT_PUBLIC_API_KEY}`
+        }})
         .then((response) => response)
         .catch((error) => error);
 
@@ -26,7 +46,7 @@ export const postSurvey = async (survey: SurveyRequest) => {
     return data;
 }
 
-export const patchSurvey = async (id: number, survey: SurveyRequest) => {
+export const patchSurvey = async (id: string, survey: SurveyRequest) => {
         const { data } = await api.patch<Response<null>>(`/surveys/${id}`, survey)
             .then((response) => response)
             .catch((error) => error);
@@ -34,7 +54,7 @@ export const patchSurvey = async (id: number, survey: SurveyRequest) => {
         return data;
 }
 
-export const publishSurvey = async (id: number) => {
+export const publishSurvey = async (id: string) => {
     const { data } = await api.patch<Response<null>>(`/surveys/${id}/publish`)
         .then((response) => response)
         .catch((error) => error);

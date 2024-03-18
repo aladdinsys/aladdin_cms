@@ -1,27 +1,26 @@
 'use client'
 
-import {FormEvent, useEffect, useRef} from "react";
+import React, { useRef} from "react";
 import Button from "@/components/atoms/Button";
-import InputField from "@/components/molecule/InputField";
 import {useRouter} from 'next/navigation'
 import useUserState from "@/store/UserState";
 
 import { signIn as signInApi } from "@/apis/auth";
-import {removeCookie, setCookie} from "@/utils/cookie";
+import { setCookie} from "@/utils/cookie";
 import {ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE} from "@/constants/auth";
 
 const SignInForm = () => {
 
     const router = useRouter();
-    const { setAuth, signOut } = useUserState();
+    const { setAuth } = useUserState();
 
     const userIdRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
-    const onPasswordKeyDown = async (event: FormEvent<HTMLInputElement>) => {
-        // @ts-ignore
-        if(event.key !== 'Enter') return;
-        await signIn();
+    const onPasswordKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === 'Enter') {
+            await signIn();
+        }
     }
 
     const signIn = async () => {
@@ -52,21 +51,30 @@ const SignInForm = () => {
         router.refresh();
     }
 
-    useEffect(() => {
-        // signOut();
-        // removeCookie(ACCESS_TOKEN_COOKIE, {path: '/'});
-        // removeCookie(REFRESH_TOKEN_COOKIE, {path: '/'});
-    },[signOut])
 
     return (
         <div className={"py-4 min-h-[30rem] flex flex-col gap-2"}>
-            <InputField color={"gray"} type={"text"} name={"userId"} label={"사용자 아이디"} ref={userIdRef} />
-            <InputField type={"password"} name={"password"} label={"비밀 번호"} ref={passwordRef} onKeyDown={onPasswordKeyDown} />
+            <label
+                className={"block mb-2 font-bold"}
+                htmlFor={"userId"}>
+                사용자 아이디
+                <input
+                    className={inputClassName} id={"userId"} color={"gray"} type={"text"} name={"userId"}  ref={userIdRef} />
+            </label>
+            <label
+                className={"block mb-2 font-bold"}
+                htmlFor={"password"}>
+                비밀 번호
+                <input
+                    className={inputClassName} id={"password"} type={"password"} name={"password"} ref={passwordRef} onKeyDown={onPasswordKeyDown} />
+            </label>
             <Button onClick={signIn} >
                 로그인
             </Button>
         </div>
     )
 }
+
+const inputClassName = `bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 select-none border`;
 
 export default SignInForm;
