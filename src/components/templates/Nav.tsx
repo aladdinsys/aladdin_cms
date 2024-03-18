@@ -52,10 +52,13 @@ export default function Nav() {
 
 
     return (
-        <div className="relative bg-gray-900 p-8 flex flex-row justify-between gap-8 items-center text-violet-50">
-                <Link href={"/"}>Home</Link>
-                <Link href={"/survey/forms"}>서베이 목록</Link>
-                <Link href={"/survey/result"}>서베이 결과</Link>
+        <div className="relative bg-gray-900 p-8 flex flex-row justify-between items-center text-violet-50">
+                <div
+                    className={"flex-1 flex flex-row gap-2"}>
+                    <Link href={"/"}>Home</Link>
+                    <Link href={"/survey/forms"}>설문 목록</Link>
+                    <Link href={"/survey/result"}>설문 결과</Link>
+                </div>
                 <div className={"flex-1 self-end flex justify-end flex-row gap-4"}>
                     {name ?
                         <div className={"flex"}>

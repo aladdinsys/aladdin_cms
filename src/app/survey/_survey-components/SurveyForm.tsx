@@ -19,9 +19,6 @@ const SurveyForm = () => {
     const [openPostcode, setOpenPostcode] = useState(true);
 
     const handleSubmit = async () => {
-
-        console.log(title);
-
         const surveyRequest: SurveyRequest = {
             title: title,
             description: description,
