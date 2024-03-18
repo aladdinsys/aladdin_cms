@@ -14,6 +14,7 @@ const LongAnswerQuestion: React.FC<LongAnswerQuestionProps> = ({question}) => {
     return (
         <>
             <Input
+                id={tempInputId}
                 name={tempInputId}
                 type={"text"}
                 className={"bg-transparent dark:bg-transparent border-b border-dotted"}

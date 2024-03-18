@@ -59,9 +59,10 @@ const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) 
                         className={"select-none pointer-events-none"}
                     />
                     <Input
+                        id={tempInputId}
                         name={tempInputId}
                         type="text"
-                        defaultValue={answer.label}
+                        value={answer.label}
                         onChange={(e) => handleAnswerChange(index, e.currentTarget.value)}
                     />
                     <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>

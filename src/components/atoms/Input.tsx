@@ -4,10 +4,10 @@ import {FormEvent, ForwardedRef, forwardRef} from "react";
 import {twMerge} from "tailwind-merge";
 
 type InputProps = {
+    id: string;
     type: string;
-    id?: string;
     name: string;
-    defaultValue?: string;
+    value?: string;
     placeholder?: string;
     className?: string;
     readOnly?: boolean;
@@ -18,10 +18,10 @@ type InputProps = {
 
 const Input = forwardRef((
                 {
-                    type,
                     id,
+                    type,
                     name,
-                    defaultValue,
+                    value,
                     className,
                     onKeyDown,
                     onChange,
@@ -43,7 +43,7 @@ const Input = forwardRef((
                         onKeyDown={onKeyDown}
                         onChange={onChange}
                         placeholder={placeholder ?? '입력 하세요'}
-                        defaultValue={defaultValue ?? ''}
+                        defaultValue={value ?? ''}
                         readOnly={readOnly}
                     />
                 )

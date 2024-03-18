@@ -46,7 +46,10 @@ const initialState: State = {
 const useSurveyStore = create<State & Actions>()((set, get) => ({
     ...initialState,
     setId: (id: string | null) => set({id}),
-    setTitle: (title:string) => set({title}),
+    setTitle: (title:string) => {
+        console.log(title);
+        set({title});
+    },
     setDescription: (description:string) => set({ description }),
     setSections: (sections) => set({ sections }),
     setCenter: (center) => set({ center }),

@@ -59,9 +59,10 @@ const MultipleSection: React.FC<MultipleSelectionProps> = ({sectionId, question}
                         className={"select-none pointer-events-none"}
                     />
                     <Input
+                        id={tempInputId}
                         name={tempInputId}
                         type="text"
-                        defaultValue={answer.label}
+                        value={answer.label}
                         onChange={(e) => handleAnswerChange(index, e.currentTarget.value)}
                     />
                     <Button color={"red"} onClick={() => handleDeleteAnswer(index)}>

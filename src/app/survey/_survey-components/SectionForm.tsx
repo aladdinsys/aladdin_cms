@@ -35,7 +35,7 @@ export default function SectionForm({section}: SurveySectionProps) {
                     name={tempTitleName}
                     type="text"
                     label={"섹션 제목"}
-                    defaultValue={section?.title}
+                    value={section?.title}
                     onChange={handleTitleChange}
                     placeholder="섹션 제목을 입력해주세요."
                 />
@@ -44,7 +44,7 @@ export default function SectionForm({section}: SurveySectionProps) {
                     name={tempDescName}
                     type="text"
                     label={"섹션 설명"}
-                    defaultValue={section?.description}
+                    value={section?.description}
                     onChange={handleDescriptionChange}
                     placeholder="섹션 설명을 입력해주세요."
                 />

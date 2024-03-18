@@ -37,7 +37,7 @@ const QuestionForm: React.FC<QuestionListProps> = ({question, sectionId}) => {
                     type="text"
                     id={tempInputId}
                     name={tempInputId}
-                    defaultValue={question.question_text}
+                    value={question.question_text}
                     onChange={(e) => updateQuestion(sectionId, question.id, e.currentTarget.value)}
                     placeholder="질문을 입력해주세요"
                 />

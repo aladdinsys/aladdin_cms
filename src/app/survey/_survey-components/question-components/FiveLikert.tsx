@@ -46,9 +46,10 @@ const FiveLikertQuestion: React.FC<FiveLikertQuestionProps> = ({sectionId, quest
             {question.answers.map((answer, index) => (
                 <div key={index} className={"flex flex-row gap-2"}>
                     <Input
+                        id={tempInputId}
                         name={tempInputId}
                         type="text"
-                        defaultValue={answer.label}
+                        value={answer.label}
                         onChange={(e) => handleAnswerChange(index, e.currentTarget.value)}
                     />
                     <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}

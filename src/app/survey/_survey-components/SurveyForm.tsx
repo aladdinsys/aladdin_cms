@@ -16,17 +16,15 @@ const SurveyForm = () => {
     const router = useRouter();
 
     const { id, title, description, sections, center, setTitle, setDescription, setId, setSections, addSection, setCenter } = useSurveyStore();
-
     const [openPostcode, setOpenPostcode] = useState(true);
-
-    const titleRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = async () => {
 
+        console.log(title);
+
         const surveyRequest: SurveyRequest = {
-            title: titleRef.current?.value!,
-            description: descriptionRef.current?.value!,
+            title: title,
+            description: description,
             content: JSON.stringify(sections),
             center: center
         }
@@ -40,8 +38,7 @@ const SurveyForm = () => {
                 responseData = await postSurvey(surveyRequest);
             }
 
-            // router.push('/survey/forms');
-            console.log(responseData);
+            router.replace(`/survey/forms`);
 
         } catch (error) {
 
@@ -52,21 +49,26 @@ const SurveyForm = () => {
         if(id !== null) {
             getSurveyById(id).then((response) => {
                 const {
-                    title, description, content
+                    title, description, center, content
                 } = response.result;
 
                 setTitle(title);
                 setDescription(description);
 
+                if(center && center.x !== 0 && center.y !== 0) {
+                    setCenter(center);
+                    setOpenPostcode(false);
+                }
+
                 setSections(JSON.parse(content));
             })
         }
 
-    }, [id, setDescription, setId, setSections, setTitle]);
+    }, [id]);
 
     useEffect(() => {
         retrieveForm();
-    }, [id, title, description, retrieveForm]);
+    }, [id, retrieveForm]);
 
 
     const handle = {
@@ -93,10 +95,8 @@ const SurveyForm = () => {
 
     return (
         <div className="survey-form-container min-w-[33%] bg-white dark:bg-gray-100 border px-8 py-4">
-            <InputField id={`title`} type={"text"} defaultValue={title ?? ''} className={"text-xl"} name={"title"}
-                        label={"타이틀"} ref={titleRef}/>
-            <InputField id={`description`} type={"text"} defaultValue={description ?? ''} name={"description"}
-                        label={"설명"} ref={descriptionRef}/>
+            <InputField id={`title`} type={"text"} name={"title"} label={"타이틀"} className={"text-xl"} value={title} onChange={(event) =>{ setTitle(event.currentTarget.value); }} />
+            <InputField id={`description`} type={"text"} name={"description"} label={"설명"} value={description} onChange={(event) => setDescription(event.currentTarget.value)}/>
 
             <div>
                 {openPostcode &&

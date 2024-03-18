@@ -38,9 +38,10 @@ const BooleanQuestion: React.FC<BooleanQuestionProps> = ({sectionId, question}) 
             {question.answers.map((answer, i) => (
                 <div key={i} className={"flex flex-row gap-2"}>
                     <Input
+                        id={answer.name}
                         type="text"
                         name={answer.name}
-                        defaultValue={answer.label}
+                        value={answer.label}
                         onChange={(e) => handleAnswerChange(i, e.currentTarget.value)}
                     />
                     <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>

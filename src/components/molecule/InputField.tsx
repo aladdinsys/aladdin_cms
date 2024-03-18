@@ -3,16 +3,15 @@ import {FormEvent, ForwardedRef, forwardRef} from "react";
 import {twMerge} from "tailwind-merge";
 
 type InputFieldProps = {
-    type: string;
     id: string;
+    type: string;
     name: string;
     label: string;
-    defaultValue?: string;
+    value?: string;
     color?: string;
     placeholder?: string;
     className?: string;
     readOnly?: boolean;
-    onKeyDown?: (event: FormEvent<HTMLInputElement>) => void;
     onChange?: (event: FormEvent<HTMLInputElement>) => void;
 }
 
@@ -29,10 +28,9 @@ const InputField = forwardRef(
                     id,
                     name,
                     label,
-                    defaultValue,
+                    value,
                     color = 'violet',
                     className,
-                    onKeyDown,
                     onChange,
                     placeholder,
                     readOnly
@@ -48,7 +46,7 @@ const InputField = forwardRef(
                 colorClasses[color]
             )}>
                 <label className="block mb-2 font-bold" htmlFor={id}>{label}</label>
-                <Input className={className} id={id} type={type} name={name} ref={ref} defaultValue={defaultValue} onKeyDown={onKeyDown} onChange={onChange} placeholder={placeholder} readOnly={readOnly} />
+                <Input className={className} id={id} type={type} name={name} value={value} ref={ref} onChange={onChange} placeholder={placeholder} readOnly={readOnly} />
             </div>
         )
 })
