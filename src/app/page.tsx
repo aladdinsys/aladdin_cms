@@ -1,7 +1,7 @@
 export default function Page() {
 
     return (
-        <div className={"h-screen flex"}>
+        <div className={"min-h-full flex-1 flex"}>
         </div>
     );
 }
