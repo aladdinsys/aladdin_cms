@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import useSurveyStore from "@/store/SurveyState";
 import SectionForm from "@/app/survey/_survey-components/SectionForm";
 import {getCoord, getSurveyById, patchSurvey, postSurvey} from "@/apis/survey";

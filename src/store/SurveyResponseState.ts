@@ -12,6 +12,10 @@ const useSurveyResponseState = create<SurveyResponseState>((set) => ({
         title: '',
         description: '',
         content: '',
+        center: {
+            x: 0,
+            y: 0
+        },
         publishId: '',
         owner: '',
         createdAt: '',
