@@ -15,10 +15,10 @@ const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) 
     const {updateQuestionAnswer} = useSurveyStore();
 
 
-    const handleAnswerChange = (index: number, newValue: string) => {
-        const updatedAnswers = question.answers.map((answer, i) => {
-            if (i === index) {
-                return {...answer, label: newValue};
+    const handleAnswerChange = (answerId: string, newText: string) => {
+        const updatedAnswers = question.answers.map(answer => {
+            if (answer.id === answerId) {
+                return {...answer, label: newText, value: newText};
             }
             return answer;
         });
@@ -31,42 +31,37 @@ const SingleSelection: React.FC<SingleSelectionProps> = ({sectionId, question}) 
             return;
         }
         const newAnswer = {
+            id: generateUID(),
             label: '',
-            value: (question.answers.length + 1).toString(),
+            value: '',
             nextSection: ''
         };
         const newAnswers = [...question.answers, newAnswer];
         updateQuestionAnswer(sectionId, question.id, newAnswers);
     };
 
-    const handleDeleteAnswer = (index: number) => {
-        const filteredAnswers = question.answers.filter((_, i) => i !== index);
-        const renumberedAnswers = filteredAnswers.map((answer, i) => ({
-            ...answer,
-            value: (i + 1).toString(),
-        }));
-        updateQuestionAnswer(sectionId, question.id, renumberedAnswers);
+    const handleDeleteAnswer = (answerId: string) => {
+        const filteredAnswers = question.answers.filter(answer => answer.id !== answerId);
+        updateQuestionAnswer(sectionId, question.id, filteredAnswers);
     };
-
-    const tempInputId = generateUID();
 
     return (
         <div className={"flex flex-col gap-2"}>
-            {question.answers.map((answer, index) => (
-                <div key={index} className={"flex flex-row gap-2 relative"}>
+            {question.answers.map((answer) => (
+                <div key={answer.id} className={"flex flex-row gap-2 relative"}>
                     <input
                         type="checkbox"
                         className={"select-none pointer-events-none"}
                     />
                     <Input
-                        id={tempInputId}
-                        name={tempInputId}
+                        id={answer.id}
+                        name={answer.id}
                         type="text"
                         value={answer.label}
-                        onChange={(e) => handleAnswerChange(index, e.currentTarget.value)}
+                        onChange={(e) => handleAnswerChange(answer.id, e.currentTarget.value)}
                     />
                     <NextSectionSelector sectionId={sectionId} questionId={question.id} answerValue={answer.value}/>
-                    <Button color={"red"} onClick={() => handleDeleteAnswer(index)}>
+                    <Button color={"red"} onClick={() => handleDeleteAnswer(answer.id)}>
                         X
                     </Button>
                 </div>

@@ -9,7 +9,7 @@ interface NextSectionSelectorProps {
 
 const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, questionId, answerValue}) => {
 
-    const { sections, updateQuestionAnswer} = useSurveyStore();
+    const {sections, updateQuestionAnswer} = useSurveyStore();
 
     const handleSectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const currentSection = sections.find(section => section.id === sectionId);
@@ -43,9 +43,9 @@ const NextSectionSelector: React.FC<NextSectionSelectorProps> = ({sectionId, que
             value={isNextSectionValid ? currentNextSection : ""}
             onChange={(e) => handleSectionChange(e)}>
             <option value="">다음 섹션 선택</option>
-            {sections.map((section, index) => (
+            {sections.map((section) => (
                 sectionId !== section.id && (
-                    <option key={index} value={section.id}>
+                    <option key={section.id} value={section.id}>
                         {`(${!section.title || section.title.length < 1 ? '이름 없음' : section.title})섹션으로 이동`}
                     </option>
                 )

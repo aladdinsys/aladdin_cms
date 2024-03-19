@@ -31,7 +31,7 @@ const FiveLikertQuestion: React.FC<FiveLikertQuestionProps> = ({sectionId, quest
     const handleAnswerChange = (index: number, newValue: string) => {
         const newAnswers = question.answers.map((answer, i) => {
             if (i === index) {
-                return {...answer, value: newValue, label: newValue};
+                return {...answer, label: newValue};
             }
             return answer;
         });
