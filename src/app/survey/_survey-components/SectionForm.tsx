@@ -50,8 +50,8 @@ export default function SectionForm({section}: SurveySectionProps) {
                 />
             </div>
 
-            {section.questions.map((question, index) => (
-                <QuestionForm key={index} question={question} sectionId={section.id}/>
+            {section.questions.map((question) => (
+                <QuestionForm key={question.id} question={question} sectionId={section.id}/>
             ))}
             <div
                 className={"w-full mt-6 flex flex-col gap-2 justify-end px-4"}

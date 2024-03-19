@@ -1,13 +1,13 @@
 import {create} from 'zustand';
-import {QuestionType, Section, Survey} from "@/app/survey/_types/survey";
+import {QuestionType, Section} from "@/app/survey/_types/survey";
 import {generateUID} from "@/utils/uid";
 
 type Actions = {
     setId: (id: string | null) => void,
-    setTitle: (title:string) => void,
-    setDescription: (description:string) => void,
+    setTitle: (title: string) => void,
+    setDescription: (description: string) => void,
     setSections: (sections: Section[]) => void;
-    setCenter: (center: {x: number, y: number}) => void;
+    setCenter: (center: { x: number, y: number }) => void;
 
     addSection: () => void;
     updateSection: (sectionId: string, updateFn: (section: Section) => Section) => void;
@@ -43,21 +43,19 @@ const initialState: State = {
     }
 }
 
-const useSurveyStore = create<State & Actions>()((set, get) => ({
+const useSurveyStore = create<State & Actions>()((set) => ({
     ...initialState,
     setId: (id: string | null) => set({id}),
-    setTitle: (title:string) => {
-        console.log(title);
+    setTitle: (title: string) => {
         set({title});
     },
-    setDescription: (description:string) => set({ description }),
-    setSections: (sections) => set({ sections }),
-    setCenter: (center) => set({ center }),
+    setDescription: (description: string) => set({description}),
+    setSections: (sections) => set({sections}),
+    setCenter: (center) => set({center}),
     addSection: () => set((state) => ({
         sections: [
             ...state.sections,
-            // { id: `${state.sections.length + 1}`, title: '', description: '', questions: [] }
-            { id: generateUID(), title: '', description: '', questions: [] }
+            {id: generateUID(), title: '', description: '', questions: []}
 
         ]
     })),
@@ -79,41 +77,16 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
         }));
     },
 
-    deleteSection: (sectionId) => set(state => {
-        const updatedContentsWithNextSection = state.sections.map(section => ({
-            ...section,
-            questions: section.questions.map(question => ({
-                ...question,
-                answers: question.answers.map(answer => {
-                    if (answer.nextSection && answer.nextSection !== "" && answer.nextSection !== sectionId) {
-                        const updatedNextSection = parseInt(answer.nextSection) > parseInt(sectionId)
-                            ? `${parseInt(answer.nextSection) - 1}`
-                            : answer.nextSection;
-                        return { ...answer, nextSection: updatedNextSection };
-                    }
-                    return { ...answer, nextSection: answer.nextSection === sectionId ? "" : answer.nextSection };
-                })
-            }))
-        }));
-
-        const filteredSections = updatedContentsWithNextSection.filter(section => section.id !== sectionId);
-        const renumberedSections = filteredSections.map((section, index) => ({
-            ...section,
-            id: `${index + 1}`
-        }));
-
-        return {
-            sections: renumberedSections
-        };
-    }),
+    deleteSection: (sectionId) => set((state) => ({
+        sections: state.sections.filter(section => section.id !== sectionId)
+    })),
 
     addQuestion: (sectionId, questionType) => set(state => {
         return {
             sections: state.sections.map(section => {
                 if (section.id === sectionId) {
-                    const newQuestionId = `question-${section.questions.length + 1}`;
                     const newQuestion = {
-                        id: newQuestionId,
+                        id: generateUID(),
                         type: questionType,
                         question_text: '',
                         answers: [],
@@ -148,23 +121,25 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
         useSurveyStore.getState().updateSection(sectionId, (section) => ({
             ...section,
             questions: section.questions.map(question =>
-                question.id === questionId ? {...question, type: newType,  answers: []} : question
+                question.id === questionId ? {...question, type: newType, answers: []} : question
             ),
         }));
     },
 
-    deleteQuestion: (sectionId, questionId) => set(state => ({
-        sections: state.sections.map(section => {
-            if (section.id === sectionId) {
-                const updatedQuestions = section.questions.filter(question => question.id !== questionId);
-                return {
-                    ...section,
-                    questions: updatedQuestions
-                };
-            }
-            return section;
-        })
-    })),
+    deleteQuestion: (sectionId, questionId) => set(state => {
+        return {
+            ...state,
+            sections: state.sections.map(section => {
+                if (section.id === sectionId) {
+                    const updatedQuestions = section.questions.filter(question => {
+                        return question.id !== questionId;
+                    });
+                    return {...section, questions: updatedQuestions};
+                }
+                return section;
+            })
+        };
+    }),
 
     reset: () => {
         set(initialState)
