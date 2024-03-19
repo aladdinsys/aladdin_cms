@@ -36,6 +36,7 @@ const SurveyForm = () => {
             }
 
             router.replace(`/survey/forms`);
+            console.log(responseData);
 
         } catch (error) {
 

@@ -47,7 +47,6 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
     ...initialState,
     setId: (id: string | null) => set({id}),
     setTitle: (title:string) => {
-        console.log(title);
         set({title});
     },
     setDescription: (description:string) => set({ description }),
@@ -79,33 +78,37 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
         }));
     },
 
-    deleteSection: (sectionId) => set(state => {
-        const updatedContentsWithNextSection = state.sections.map(section => ({
-            ...section,
-            questions: section.questions.map(question => ({
-                ...question,
-                answers: question.answers.map(answer => {
-                    if (answer.nextSection && answer.nextSection !== "" && answer.nextSection !== sectionId) {
-                        const updatedNextSection = parseInt(answer.nextSection) > parseInt(sectionId)
-                            ? `${parseInt(answer.nextSection) - 1}`
-                            : answer.nextSection;
-                        return { ...answer, nextSection: updatedNextSection };
-                    }
-                    return { ...answer, nextSection: answer.nextSection === sectionId ? "" : answer.nextSection };
-                })
-            }))
-        }));
+    // deleteSection: (sectionId) => set(state => {
+    //     const updatedContentsWithNextSection = state.sections.map(section => ({
+    //         ...section,
+    //         questions: section.questions.map(question => ({
+    //             ...question,
+    //             answers: question.answers.map(answer => {
+    //                 if (answer.nextSection && answer.nextSection !== "" && answer.nextSection !== sectionId) {
+    //                     const updatedNextSection = parseInt(answer.nextSection) > parseInt(sectionId)
+    //                         ? `${parseInt(answer.nextSection) - 1}`
+    //                         : answer.nextSection;
+    //                     return { ...answer, nextSection: updatedNextSection };
+    //                 }
+    //                 return { ...answer, nextSection: answer.nextSection === sectionId ? "" : answer.nextSection };
+    //             })
+    //         }))
+    //     }));
+    //
+    //     const filteredSections = updatedContentsWithNextSection.filter(section => section.id !== sectionId);
+    //     const renumberedSections = filteredSections.map((section, index) => ({
+    //         ...section,
+    //         id: `${index + 1}`
+    //     }));
+    //
+    //     return {
+    //         sections: renumberedSections
+    //     };
+    // }),
 
-        const filteredSections = updatedContentsWithNextSection.filter(section => section.id !== sectionId);
-        const renumberedSections = filteredSections.map((section, index) => ({
-            ...section,
-            id: `${index + 1}`
-        }));
-
-        return {
-            sections: renumberedSections
-        };
-    }),
+    deleteSection: (sectionId) => set((state) => ({
+        sections: state.sections.filter(section => section.id !== sectionId)
+    })),
 
     addQuestion: (sectionId, questionType) => set(state => {
         return {

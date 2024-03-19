@@ -54,10 +54,10 @@ const MultipleSection: React.FC<MultipleSelectionProps> = ({sectionId, question}
         <div className={"flex flex-col gap-2"}>
             {question.answers.map((answer, index) => (
                 <div key={index} className={"flex flex-row gap-2 relative"}>
-                    <input
-                        type="checkbox"
-                        className={"select-none pointer-events-none"}
-                    />
+                    {/*<input*/}
+                    {/*    type="checkbox"*/}
+                    {/*    className={"select-none pointer-events-none"}*/}
+                    {/*/>*/}
                     <Input
                         id={tempInputId}
                         name={tempInputId}
