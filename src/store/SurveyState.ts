@@ -55,7 +55,6 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
     addSection: () => set((state) => ({
         sections: [
             ...state.sections,
-            // { id: `${state.sections.length + 1}`, title: '', description: '', questions: [] }
             { id: generateUID(), title: '', description: '', questions: [] }
 
         ]
@@ -78,34 +77,6 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
         }));
     },
 
-    // deleteSection: (sectionId) => set(state => {
-    //     const updatedContentsWithNextSection = state.sections.map(section => ({
-    //         ...section,
-    //         questions: section.questions.map(question => ({
-    //             ...question,
-    //             answers: question.answers.map(answer => {
-    //                 if (answer.nextSection && answer.nextSection !== "" && answer.nextSection !== sectionId) {
-    //                     const updatedNextSection = parseInt(answer.nextSection) > parseInt(sectionId)
-    //                         ? `${parseInt(answer.nextSection) - 1}`
-    //                         : answer.nextSection;
-    //                     return { ...answer, nextSection: updatedNextSection };
-    //                 }
-    //                 return { ...answer, nextSection: answer.nextSection === sectionId ? "" : answer.nextSection };
-    //             })
-    //         }))
-    //     }));
-    //
-    //     const filteredSections = updatedContentsWithNextSection.filter(section => section.id !== sectionId);
-    //     const renumberedSections = filteredSections.map((section, index) => ({
-    //         ...section,
-    //         id: `${index + 1}`
-    //     }));
-    //
-    //     return {
-    //         sections: renumberedSections
-    //     };
-    // }),
-
     deleteSection: (sectionId) => set((state) => ({
         sections: state.sections.filter(section => section.id !== sectionId)
     })),
@@ -114,9 +85,8 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
         return {
             sections: state.sections.map(section => {
                 if (section.id === sectionId) {
-                    const newQuestionId = `question-${section.questions.length + 1}`;
                     const newQuestion = {
-                        id: newQuestionId,
+                        id: generateUID(),
                         type: questionType,
                         question_text: '',
                         answers: [],
@@ -156,18 +126,23 @@ const useSurveyStore = create<State & Actions>()((set, get) => ({
         }));
     },
 
-    deleteQuestion: (sectionId, questionId) => set(state => ({
-        sections: state.sections.map(section => {
-            if (section.id === sectionId) {
-                const updatedQuestions = section.questions.filter(question => question.id !== questionId);
-                return {
-                    ...section,
-                    questions: updatedQuestions
-                };
-            }
-            return section;
-        })
-    })),
+    deleteQuestion: (sectionId, questionId) => set(state => {
+        return {
+            ...state,
+            sections: state.sections.map(section => {
+                if (section.id === sectionId) {
+                    const updatedQuestions = section.questions.filter(question => {
+                        // 각 질문의 ID와 삭제하려는 questionId 출력
+                        console.log("Question ID:", question.id, "Deleting ID:", questionId);
+                        return question.id !== questionId;
+                    });
+                    return {...section, questions: updatedQuestions};
+                }
+                return section;
+                console.log(section);
+            })
+        };
+    }),
 
     reset: () => {
         set(initialState)
